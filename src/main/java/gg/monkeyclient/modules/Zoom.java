@@ -14,7 +14,7 @@ public class Zoom extends Module {
     public final BoolSetting cinematic = add(new BoolSetting("cinematic", "Reduce mouse sensitivity", true));
     public final BoolSetting scroll = add(new BoolSetting("scroll", "Scroll to adjust zoom", true));
     private boolean toggled, wasDown;
-    private double factor = 1, scrollDivisor = 4, visualScale = 1;
+    private double factor = 1, scrollDivisor = 4, visualScale = 1, crosshairOpacity = 1;
     private long lastFrame;
     public Zoom() { super("zoom", "Zoom", "Smooth world zoom with scroll control", Category.UTILITY, true); }
     @Override public void onTick() {
@@ -25,16 +25,19 @@ public class Zoom extends Module {
         if (toggled && !before) scrollDivisor = divisor.get();
         wasDown = down;
     }
-    @Override public void onToggle(boolean on) { toggled = false; wasDown = false; factor = visualScale = 1; lastFrame = 0; }
+    @Override public void onToggle(boolean on) { toggled = false; wasDown = false; factor = visualScale = crosshairOpacity = 1; lastFrame = 0; }
     public boolean active() { return isEnabled() && toggled; }
     public void advanceFrame() {
         long now = System.nanoTime();
         double dt = lastFrame == 0 ? 0 : Math.min(0.1, (now - lastFrame) / 1e9); lastFrame = now;
         double amount = smooth.get() <= 0 ? 1 : 1 - Math.exp(-dt * 5 / smooth.get());
         factor += ((active() ? 1 / scrollDivisor : 1) - factor) * amount;
+        crosshairOpacity += ((active() ? 0 : 1) - crosshairOpacity) * (1 - Math.exp(-dt / .16));
+        if (crosshairOpacity < .002) crosshairOpacity = 0;
+        if (crosshairOpacity > .998) crosshairOpacity = 1;
     }
     public double fovFactor() { return factor; }
-    public float crosshairAlpha() { return 1; }
+    public float crosshairAlpha() { return (float)crosshairOpacity; }
     public float visualScale() { return (float)visualScale; }
     public float zoomFov(float original) {
         float result=(float)(original*factor);

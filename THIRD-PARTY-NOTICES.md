@@ -12,3 +12,5 @@ Monkey Client includes the following components, with their original notices pre
 - Tier/provider/waypoint artwork was supplied by the user. The MCPVP crossed-sword provider mark was processed with ImageGen to remove the flat background and retain a transparent icon; the other provided icons were packed into small bitmap-font assets.
 
 Minecraft and its assets belong to Mojang/Microsoft. This project is not an official Minecraft product.
+
+The UHD capture lifecycle and render/window injection approach were adapted from Fabrishot by Ramid Khan (MIT). Source: https://github.com/ramidzkh/fabrishot . See FABRISHOT-LICENSE.txt.

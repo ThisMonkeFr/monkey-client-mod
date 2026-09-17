@@ -32,9 +32,13 @@
     "apple.ClientTooltipComponentMixin",
     "SkyEditorMixin",
     "CloudEditorMixin",
-    "WaypointWorldMixin"
+    "WaypointWorldMixin",
+    "ScreenshotMixin",
+    "ScreenshotRenderMixin",
+    "ScreenshotWindowMixin"
   ],
   "injectors": {
     "defaultRequire": 0
-  }
+  },
+  "minVersion": "0.8"
 }

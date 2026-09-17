@@ -8,7 +8,7 @@ for p in (root/'src/main/resources').rglob('*'):
   if loader=='forge' and p.name=='fabric.mod.json':continue
   dest=out/rel;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,dest)
 for name in ['monkeyclient.mixins.json','monkeycache.mixins.json']:
- p=out/name;j=json.loads(p.read_text());j['compatibilityLevel']='JAVA_21' if v.startswith('1.') else 'JAVA_25'
+ p=out/name;j=json.loads(p.read_text());j['compatibilityLevel']='JAVA_21' if loader=='forge' or v.startswith('1.') else 'JAVA_25'
  if v in ['1.21.10','1.21.9']:
   if name=='monkeyclient.mixins.json':j['client']+=['RegionStorageAccessor','OutlineWidthMixin']
   elif loader=='fabric':j['client'].append('sodium06.LegacySodiumOptionsMixin')
@@ -17,7 +17,7 @@ for name in ['monkeyclient.mixins.json','monkeycache.mixins.json']:
   if name=='monkeyclient.mixins.json':j['client']+=['ForgeTickMixin','ForgePayloadCodecMixin','ForgePayloadMixin']
  p.write_text(json.dumps(j,indent=2))
 if loader=='fabric':
- p=out/'fabric.mod.json';j=json.loads(p.read_text());j['version']='0.5.0';j['depends'].update(minecraft=v,java='>=21' if v.startswith('1.') else '>=25',fabricloader='>=0.19.5',sodium='*');j['jars']=[{'file':'META-INF/jars/sodium.jar'}]
+ p=out/'fabric.mod.json';j=json.loads(p.read_text());j['version']='0.6.0';j['depends'].update(minecraft=v,java='>=21' if v.startswith('1.') else '>=25',fabricloader='>=0.19.5',sodium='*');j['jars']=[{'file':'META-INF/jars/sodium.jar'}]
  if v in ['1.21.10','1.21.9']:j['entrypoints'].pop('sodium:config_api_user',None)
  p.write_text(json.dumps(j,indent=2))
 else:
@@ -30,7 +30,7 @@ loaderVersion="[1,)"
 license="MIT AND LGPL-3.0-or-later"
 [[mods]]
 modId="monkeyclient"
-version="0.5.0"
+version="0.6.0"
 displayName="Monkey Client"
 authors="ThisMonkeFr"
 displayTest="IGNORE_ALL_VERSION"

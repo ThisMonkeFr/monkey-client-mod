@@ -1,4 +1,4 @@
-# Monkey Client mod 0.5.0
+# Monkey Client mod 0.6.0
 
 Eight Minecraft versions: 26.3, 26.2, 26.1.2, 26.1.1, 26.1, 1.21.11, 1.21.10 and 1.21.9. Fabric builds use Loader 0.19.5+ and the matching Fabric API. Forge builds are provided for every listed version except 26.3, for which Forge has no official release. Java 25 is required for 26.x; Java 21 for 1.21.x.
 
@@ -6,10 +6,11 @@ Eight Minecraft versions: 26.3, 26.2, 26.1.2, 26.1.1, 26.1, 1.21.11, 1.21.10 and
 
 - Hold Right Shift for 0.3 seconds to open the animated client landing menu.
 - Mods opens the compact module grid; settings open beside a module/HUD preview.
-- Theme selects Vanilla (default) or Custom and can match the launcher accent.
+- Theme selects Monkey (default) or Vanilla and can match the launcher accent.
 - Profiles saves whole module configurations, with create/apply/save/copy/rename/delete and clipboard import/export.
 - HUD opens the position editor. Drag to move, scroll to resize, Ctrl-drag to snap.
-- Zoom defaults to C. The world, both hands and HUD scale together without fading.
+- Zoom defaults to C. The world, both hands and HUD scale together. Only the crosshair fades smoothly.
+- F2 renders a 3840×2160 screenshot, then restores the normal framebuffer size. Captures appear in the launcher Screenshots tab.
 - Waypoints manager defaults to M; the module settings allow rebinding it. There are exactly 20 Minecraft block icons.
 - Container previews appear without Shift by default. Hold Alt + Left Control over a container to pin a read-only preview, then move over its contents for item tooltips. The inspection key is configurable.
 
@@ -30,4 +31,6 @@ Use your actual Java executable path. The tool downloads pinned SDK dependencies
 
 `tools/versions.lock.json` records the exact game metadata and Fabric API/Sodium download checksums. `src/main/java` targets 26.2; `ports` and `tools/port-sources.py` contain the API adaptations. The base Gradle project remains useful for 26.2 development; use the Python release builder for the complete loader/version matrix.
 
-All 15 release combinations compile and pass their native mixin audits. The fresh-download source builder was also verified for 26.2 Fabric. A live Minecraft/GPU session has not been validated here. See RELEASE-NOTES.md for the release's verification scope.
+All 15 release combinations compile and pass their native mixin audits. The fresh-download source builder was also verified for 26.2 Fabric. Automated runtime checks boot the client on a Linux virtual display and verify the dimensions of a real F2 capture. See RELEASE-NOTES.md for the verification scope.
+
+The Monkey menu uses smaller module cards and adapts its height to the selected category. Custom cape colours use Minecraft's elytra transparency mask to preserve the normal wing silhouette. Creative flight synchronizes speed with the integrated server; remote servers retain control over permitted movement speeds.

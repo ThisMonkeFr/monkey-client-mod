@@ -11,7 +11,7 @@ def download(url,file,sha=None,algorithm='sha1'):
  file.parent.mkdir(parents=True,exist_ok=True)
  if file.exists() and (not sha or hashlib.new(algorithm,file.read_bytes()).hexdigest()==sha):return file
  print('Download',file.name,flush=True)
- with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'MonkeyClientBuild/0.5'}),timeout=90) as r:data=r.read()
+ with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'MonkeyClientBuild/0.6'}),timeout=90) as r:data=r.read()
  if sha and hashlib.new(algorithm,data).hexdigest()!=sha:raise ValueError('Checksum failed: '+url)
  file.write_bytes(data);return file
 def extract(file,target):
@@ -64,14 +64,14 @@ for folder in ['source','compiled','resources','runtime']:
  if not target.is_relative_to((repo/'build/release').resolve()):raise ValueError('Unsafe build output')
  if target.exists():shutil.rmtree(target)
 for kind in ['sources','resources']:run([sys.executable,repo/('tools/port-'+kind+'.py'),a.version,out/('source' if kind=='sources' else 'resources'),a.loader],out/(kind+'.log'))
-joined=';'.join(map(str,classpath));jtool('CompileDriver',[joined,out/'source',out/'compiled',row['java']],out/'compile.log')
+joined=';'.join(map(str,classpath));jtool('CompileDriver',[joined,out/'source',out/'compiled',21 if a.loader=='forge' else row['java']],out/'compile.log')
 jtool('MixinAudit',[out/'compiled',joined,out/'resources'],out/'audit.log');classes=out/'compiled'
 if a.loader=='fabric' and a.version.startswith('1.'):
  classes=out/'runtime';jtool('RemapDriver',[base/'mappings.tiny','named','intermediary',out/'compiled',classes,joined,'mixins'],out/'remap-client.log')
  jtool('MixinAudit',[classes,';'.join(map(str,[base/'intermediary',base/'api-intermediary',cp])),out/'resources'],out/'runtime-audit.log')
 if a.loader=='fabric':
  dest=out/'resources/META-INF/jars/sodium.jar';dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(base/'sodium.jar',dest)
-jar=out/('monkeyclient-0.5.0+'+a.version+'-'+a.loader+'.jar')
+jar=out/('monkeyclient-0.6.0+'+a.version+'-'+a.loader+'.jar')
 with zipfile.ZipFile(jar,'w',zipfile.ZIP_DEFLATED) as z:
  for folder in [classes,out/'resources']:
   for file in sorted(folder.rglob('*')):

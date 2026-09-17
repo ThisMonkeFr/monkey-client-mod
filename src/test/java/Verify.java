@@ -42,7 +42,7 @@ public class Verify {
         zoom.smooth.set(0d);zoom.advanceFrame();check(zoom.fovFactor()==.25,"World zoom divisor");
         check(zoom.scroll(1),"Active zoom consumes scrolling");zoom.advanceFrame();check(zoom.fovFactor()<.25,"Scroll zooms closer");
         zoom.scroll.set(false);double before=zoom.fovFactor();zoom.scroll(1);zoom.advanceFrame();check(zoom.fovFactor()==before,"Disabled scroll adjustment preserves level");
-        Thread.sleep(20);zoom.advanceFrame();check(zoom.crosshairAlpha()==1,"Zoom preserves full crosshair opacity");float world=zoom.zoomFov(90);check(world<90&&zoom.visualScale()>1,"HUD grows with world magnification");check(zoom.handFov(70)<70,"Both hands share zoom magnification");
+        Thread.sleep(20);zoom.advanceFrame();check(zoom.crosshairAlpha()>0&&zoom.crosshairAlpha()<1,"Zoom fades only the crosshair smoothly");float world=zoom.zoomFov(90);check(world<90&&zoom.visualScale()>1,"HUD grows with world magnification");check(zoom.handFov(70)<70,"Both hands share zoom magnification");
         zoom.onToggle(false);check(zoom.fovFactor()==1&&zoom.crosshairAlpha()==1,"Zoom reset restores camera and crosshair");
         check(gg.monkeyclient.modules.TiersDisplay.parseRankings("{\"rankings\":{\"sword\":{\"tier\":2,\"pos\":0},\"axe\":{\"tier\":1,\"pos\":1,\"retired\":true}}}","best",false).equals("HT2 sword"),"Tier parsing excludes retired rankings");
         check(gg.monkeyclient.modules.TiersDisplay.parseMcpvp("title=\"Overall tier: HT2\"","overall").equals("HT2 overall"),"MCPVP overall tier parsing");

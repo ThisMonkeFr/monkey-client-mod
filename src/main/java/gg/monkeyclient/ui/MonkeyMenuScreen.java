@@ -40,21 +40,29 @@ public class MonkeyMenuScreen extends Screen {
     private record Label(String text,int x,int y,int w) {}
     public MonkeyMenuScreen() { super(Component.literal("Monkey Client")); }
     @Override protected void init() {
-        pw=Math.min(700,Math.min(width-20,Math.max(300,Math.round(width*.72f))));
-        ph=Math.min(420,Math.min(height-20,Math.max(210,Math.round(height*.76f))));
+        pw=Math.min(760,Math.min(width-20,Math.max(300,Math.round(width*.82f))));
+        ph=Math.min(440,Math.min(height-20,Math.max(210,Math.round(height*.84f))));
         left=(width-pw)/2; top=(height-ph)/2;
         build();
     }
     private void navigate(String next) { page=next; selected=null; scroll=0; binding=null; opened=System.nanoTime(); build(); }
     private void build() {
         clearWidgets(); clearFocus(); cards.clear(); labels.clear();fieldValues.clear();
+        ph=Math.min(440,Math.min(height-20,Math.max(210,Math.round(height*.84f))));
+        if(page.equals("Mods")&&selected==null){
+            int filters=(Math.min(56,(pw-24)/5)+3)*(Category.values().length+1);
+            int header=64+(pw-24-filters<85?26:0);
+            int neededRows=Math.max(1,(filtered().size()+gridColumns()-1)/gridColumns());
+            ph=Math.min(ph,header+neededRows*48+4);
+        }
+        top=(height-ph)/2;
         if(page.equals("Home")) { buildHome(); return; }
         int tabW=Math.min(68,(pw-48)/5),tx=left+8;
         for(String tab:List.of("Home","Mods","Profiles","Theme","HUD")){
             button(tx,top+8,tabW-3,20,tab,()->{if(tab.equals("HUD"))minecraft.setScreenAndShow(new HudEditorScreen(this));else navigate(tab);},page.equals(tab));tx+=tabW;
         }
         button(left+pw-28,top+8,20,20,"X",this::onClose,false);
-        bodyTop=top+70; bodyBottom=top+ph-14;
+        bodyTop=top+64; bodyBottom=top+ph-8;
         if(page.equals("Profiles")){buildProfiles();return;}
         if(page.equals("Mods") && selected==null) { buildCards(); return; }
         buildSettings();
@@ -92,27 +100,29 @@ public class MonkeyMenuScreen extends Screen {
         int cursor=previous.getCursorPosition(); build();
         for(var child:children()) if(child instanceof EditBox e) { setFocused(e);e.setFocused(true); e.setCursorPosition(Math.min(cursor,e.getValue().length()));break; }
     }
+    private int gridColumns(){return Math.max(2,Math.min(6,(pw-20)/88));}
     private void buildCardRows() {
-        int columns=pw>=610?4:pw>=400?3:2,gap=6,cw=(pw-24-(columns-1)*gap)/columns;
-        int ch=74,rows=Math.max(1,(bodyBottom-bodyTop)/(ch+gap));
+        int columns=gridColumns(),gap=4,cw=(pw-24-(columns-1)*gap)/columns;
+        int rows=Math.max(1,(bodyBottom-bodyTop+gap)/48),ch=(bodyBottom-bodyTop-(rows-1)*gap)/rows;
         var list=filtered(); int totalRows=(list.size()+columns-1)/columns;
         maxScroll=Math.max(0,totalRows-rows); scroll=Math.min(scroll,maxScroll);
         for(int i=scroll*columns;i<Math.min(list.size(),(scroll+rows)*columns);i++) {
             Module m=list.get(i); int col=i%columns,row=i/columns-scroll;
             int x=left+12+col*(cw+gap),y=bodyTop+row*(ch+gap);
             cards.add(new Card(m,x,y,cw,ch));
-            MenuButton open=button(x+5,y+5,cw-10,17,m.name.toUpperCase(Locale.ROOT),()->openModule(m),false);
-            open.setTooltip(Tooltip.create(Component.literal(m.description)));
-            addRenderableWidget(new MenuButton(x+7,y+ch-26,cw-40,19,m.isEnabled()?"ENABLED":"DISABLED",()->{
+            MenuButton open=button(x+22,y+4,cw-26,16,m.name,()->openModule(m),false);
+            open.setTooltip(Tooltip.create(Component.literal(m.name+"\n"+m.description)));
+            addRenderableWidget(new MenuButton(x+5,y+ch-21,cw-29,17,m.isEnabled()?"On":"Off",()->{
                 m.enabled.toggle();m.onToggle(m.isEnabled());MonkeyClient.saveConfig();build();
             },m::isEnabled));
-            button(x+cw-29,y+ch-26,22,19,">",()->openModule(m),false);
+            var settings=button(x+cw-22,y+ch-21,17,17,">",()->openModule(m),false);
+            settings.setTooltip(Tooltip.create(Component.literal("Edit "+m.name)));
         }
     }
     private void openModule(Module m) { selected=m; scroll=0; opened=System.nanoTime(); build(); }
     private void createThemeSettings() {
         themeSettings.clear(); var t=MonkeyClient.theme();
-        themeSettings.add(new EnumSetting("style","Menu style",t.vanilla?"Vanilla":"Custom",List.of("Vanilla","Custom")));
+        themeSettings.add(new EnumSetting("style","Menu style",t.vanilla?"Vanilla":"Monkey",List.of("Monkey","Vanilla")));
         var preset=new EnumSetting("preset","Theme preset","Custom",List.of("Custom","Jungle","Volcano","Abyss","Amethyst","Ember","Frost","Classic","Amber","Ice"));
         preset.set(themePreset);themeSettings.add(preset);
         themeSettings.add(new ColorSetting("accent","Accent colour",t.accent));
@@ -263,7 +273,7 @@ public class MonkeyMenuScreen extends Screen {
             boolean hover=mx>=c.x&&mx<c.x+c.w&&my>=c.y&&my<c.y+c.h;
             VanillaDraw.panel(g,c.x,c.y,c.w,c.h,true);
             if(hover)g.fill(c.x+2,c.y+2,c.x+c.w-2,c.y+3,t.accent);
-            g.pose().pushMatrix();g.pose().translate(c.x+c.w/2f-8,c.y+26);g.pose().scale(1f,1f);
+            g.pose().pushMatrix();g.pose().translate(c.x+4,c.y+4);g.pose().scale(1f,1f);
             g.item(icon(c.module.id),0,0);g.pose().popMatrix();
         }
         for(Label l:labels) {

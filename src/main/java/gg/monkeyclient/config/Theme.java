@@ -11,7 +11,7 @@ import java.nio.file.*;
  * halves of the client look identical without being configured twice.
  */
 public class Theme {
-    public boolean vanilla = true;
+    public boolean vanilla = false;
     public int surface(){return vanilla?0xFFC6C6C6:panel;}
     public int backdrop(){return vanilla?0xFFC6C6C6:background;}
     public int ink(){return vanilla?0xFF303030:text;}

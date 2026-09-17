@@ -21,7 +21,7 @@ public class ConfigManager {
 
     public static JsonObject snapshot() {
         JsonObject root = new JsonObject();
-        root.addProperty("version", 3);
+        root.addProperty("version", 4);
 
         JsonObject modules = new JsonObject();
         for (Module m : MonkeyClient.modules().all()) {
@@ -91,7 +91,7 @@ public class ConfigManager {
             if (root.has("theme")) {
                 JsonObject t = root.getAsJsonObject("theme");
                 Theme th = MonkeyClient.theme();
-                th.vanilla=!t.has("vanilla")||t.get("vanilla").getAsBoolean();
+                th.vanilla=root.has("version")&&root.get("version").getAsInt()>=4&&t.has("vanilla")&&t.get("vanilla").getAsBoolean();
                 if (t.has("accent")) th.accent = t.get("accent").getAsInt();
                 if (t.has("background")) th.background = t.get("background").getAsInt();
                 if (t.has("panel")) th.panel = t.get("panel").getAsInt();

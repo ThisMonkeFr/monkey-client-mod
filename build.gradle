@@ -66,4 +66,4 @@ tasks.register('verifyNative', JavaExec) {
 }
 tasks.named('check') { dependsOn tasks.named('verifyNative') }
 // Preserve attribution in standard Gradle-built artifacts as well.
-tasks.named('jar') { from('ARMOR-ASSET-LICENSE.txt', 'APPLE-SKIN-LICENSE.txt', 'SHULKER-TOOLTIP-LICENSE.txt', 'BOBBY-LICENSE.md', 'THIRD-PARTY-NOTICES.md') }
+tasks.named('jar') { from('FABRISHOT-LICENSE.txt', 'ARMOR-ASSET-LICENSE.txt', 'APPLE-SKIN-LICENSE.txt', 'SHULKER-TOOLTIP-LICENSE.txt', 'BOBBY-LICENSE.md', 'THIRD-PARTY-NOTICES.md') }
