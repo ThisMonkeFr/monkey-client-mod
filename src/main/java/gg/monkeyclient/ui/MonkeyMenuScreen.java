@@ -23,7 +23,7 @@ public class MonkeyMenuScreen extends Screen {
     private gg.monkeyclient.config.ModProfiles profiles;
     private int profileIndex;
     private String profileName="";
-    private String page="Mods",query="";
+    private String page="Home",query="";
     private Category category;
     private Module selected;
     private Screen parent;
@@ -60,7 +60,7 @@ public class MonkeyMenuScreen extends Screen {
         int tabW=Math.min(76,(pw-40)/7),tx=left+8;
         for(String tab:List.of("Mods","Profiles","Theme","HUD","Friends","Screenshots","Skins")){
             String label=tabW<64&&tab.equals("Screenshots")?"Shots":tabW<48&&tab.equals("Profiles")?"Sets":tabW<48&&tab.equals("Friends")?"Chat":tab;
-            var tabButton=button(tx,top+8,tabW-3,20,label,()->{if(tab.equals("HUD"))minecraft.setScreenAndShow(new HudEditorScreen(this));else if(java.util.Set.of("Friends","Screenshots","Skins").contains(tab))minecraft.setScreenAndShow(new LauncherScreen(this,tab.toLowerCase(java.util.Locale.ROOT)));else navigate(tab);},page.equals(tab));tabButton.setTooltip(Tooltip.create(Component.literal(tab)));tx+=tabW;
+            var tabButton=button(tx,top+8,tabW-3,20,label,()->{if(tab.equals("HUD"))minecraft.setScreenAndShow(new HudEditorScreen(this));else if(java.util.Set.of("Friends","Screenshots","Skins").contains(tab))NativeScreen.open(this,tab.toLowerCase(java.util.Locale.ROOT));else navigate(tab);},page.equals(tab));tabButton.setTooltip(Tooltip.create(Component.literal(tab)));tx+=tabW;
         }
         button(left+pw-28,top+8,20,20,"X",this::onClose,false);
         bodyTop=top+64; bodyBottom=top+ph-8;

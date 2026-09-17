@@ -25,7 +25,7 @@ def run(args,log):
  with log.open('w',encoding='utf-8') as f:r=subprocess.run(list(map(str,args)),stdout=f,stderr=subprocess.STDOUT)
  if r.returncode:raise RuntimeError(log.read_text(encoding='utf-8')[-8000:])
 def jtool(name,args,log):run([a.java,'-Xmx3g','-cp',str(bin)+os.pathsep+str(deps),name,*args],log)
-coordinates=[('net.fabricmc','fabric-loader','0.19.5'),('net.fabricmc','sponge-mixin','0.17.4+mixin.0.8.7'),('net.fabricmc','tiny-remapper','0.14.0'),('net.fabricmc','mapping-io','0.8.0'),('io.github.llamalad7','mixinextras-common','0.5.5'),('org.jetbrains','annotations','26.1.0')]+[('org.ow2.asm',name,'9.10.1') for name in ['asm','asm-tree','asm-commons','asm-util','asm-analysis']]+[('com.google.code.gson','gson','2.13.2')]
+coordinates=[('net.fabricmc','fabric-loader','0.19.5'),('net.fabricmc','sponge-mixin','0.17.4+mixin.0.8.7'),('net.fabricmc','tiny-remapper','0.14.0'),('net.fabricmc','mapping-io','0.9.0'),('io.github.llamalad7','mixinextras-common','0.5.5'),('org.jetbrains','annotations','26.1.0')]+[('org.ow2.asm',name,'9.10.1') for name in ['asm','asm-tree','asm-commons','asm-util','asm-analysis']]+[('com.google.code.gson','gson','2.13.2')]
 for group,name,version in coordinates:
  rel=group.replace('.','/')+'/'+name+'/'+version+'/'+name+'-'+version+'.jar';host='https://maven.fabricmc.net/' if group=='net.fabricmc' else 'https://repo.maven.apache.org/maven2/'
  jar=download(host+rel,cache/'libraries'/rel);extract(jar,deps);extract(jar,cp)
@@ -71,7 +71,7 @@ if a.loader=='fabric' and a.version.startswith('1.'):
  jtool('MixinAudit',[classes,';'.join(map(str,[base/'intermediary',base/'api-intermediary',cp])),out/'resources'],out/'runtime-audit.log')
 if a.loader=='fabric':
  dest=out/'resources/META-INF/jars/sodium.jar';dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(base/'sodium.jar',dest)
-jar=out/('monkeyclient-0.8.0+'+a.version+'-'+a.loader+'.jar')
+jar=out/('monkeyclient-0.9.0+'+a.version+'-'+a.loader+'.jar')
 with zipfile.ZipFile(jar,'w',zipfile.ZIP_DEFLATED) as z:
  for folder in [classes,out/'resources']:
   for file in sorted(folder.rglob('*')):

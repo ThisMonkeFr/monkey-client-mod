@@ -34,6 +34,7 @@
     "CloudEditorMixin",
     "WaypointWorldMixin",
     "ScreenshotMixin",
+    "ScreenshotChatMixin",
     "ScreenshotRenderMixin",
     "ScreenshotWindowMixin",
     "PauseMenuMixin"

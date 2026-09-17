@@ -1,3 +1,15 @@
+# 0.9.0 - Native libraries and restored landing menu
+
+- Right Shift and the pause-menu shortcut open the Monkey landing menu again. The navigation bar has no Home tab button.
+- Native Friends supports direct/group chat, screenshot attachments, member lists, friend requests and group name/icon management.
+- Native Screenshots browses the shared archive, opens images, reveals files and deletes captures. Native Skins/Capes imports, looks up, edits, saves and applies shared cosmetics.
+- Pixel editing includes painting, fill, erase, eyedropper, colour wheel, undo/redo, Classic/Slim selection and a front/back preview. HD capes are edited as a separate 64x32 copy. Legacy skins are converted without stretching their atlas.
+- Native tabs use a data-only authenticated launcher connection. No Electron offscreen window, frame polling or remote input events. Preview images are decoded off-thread and bounded in size; textures are released when screens close.
+- F2 retains its 4K capture and brief preview, with themed `Screenshot taken [Open] [Delete]` chat actions. Delete is a local action, never sent to a server, and removes the archived copy too.
+- Launcher 0.11.0 is required for native shared-library and Friends services. Keep it running in the background. Skin changes upload to the signed-in Minecraft account; custom capes retain local cosmetic behavior.
+
+Validation: all 15 loader/version combinations are compiled and audited. Isolated runtime checks exercise world entry, flight, the home/menu distinction, group data, JPEG image previews, native pixel editing, screenshot chat text and an actual 4K capture. These checks do not send real friend messages or modify a user's library.
+
 # Monkey Client 0.10.0 / mod 0.8.0
 
 ## Flight and game controls

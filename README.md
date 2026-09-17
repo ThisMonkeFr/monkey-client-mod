@@ -1,16 +1,16 @@
-# Monkey Client mod 0.8.0
+# Monkey Client mod 0.9.0
 
 Eight Minecraft versions: 26.3, 26.2, 26.1.2, 26.1.1, 26.1, 1.21.11, 1.21.10 and 1.21.9. Fabric builds use Loader 0.19.5+ and the matching Fabric API. Forge builds are provided for every listed version except 26.3, for which Forge has no official release. Java 25 is required for 26.x; Java 21 for 1.21.x.
 
 ## Controls
 
-- Hold Right Shift for 0.3 seconds to open the compact module grid.
-- Module settings open beside a module/HUD preview. Friends, Screenshots and Skins use the full launcher interface while the launcher remains running.
+- Hold Right Shift for 0.3 seconds to open the home menu; Client Settings opens the compact module grid.
+- Module settings open beside a module/HUD preview. Friends, Screenshots and Skins use native Minecraft widgets. The launcher stays open as an authenticated data service for shared libraries and MonkeyNet; no hidden browser window or streamed frames are used.
 - Theme selects Monkey (default) or Vanilla and can match the launcher accent.
 - Profiles saves whole module configurations, with create/apply/save/copy/rename/delete, PvP/Hoplite presets, an active-profile label and unique sharing codes.
 - HUD opens the position editor. Drag to move, scroll to resize, Ctrl-drag to snap.
 - Zoom defaults to C. The world, both hands and HUD scale together. Only the crosshair fades smoothly.
-- F2 renders a 3840 by 2160 screenshot, then restores the normal framebuffer size. A brief capture flash and real thumbnail appear for about two seconds. Captures appear in the launcher Screenshots tab.
+- F2 renders a 3840 by 2160 screenshot, then restores the normal framebuffer size. A brief capture flash and real thumbnail appear for about two seconds. Captures appear in both native and launcher galleries. Chat displays theme-colored `Screenshot taken [Open] [Delete]` actions; deletion removes the original and archived copy after confirmation.
 - Waypoints manager defaults to M; the module settings allow rebinding it. There are exactly 20 Minecraft block icons; block and marker colors can be changed separately.
 - Container previews appear without Shift by default. Hold Alt + Left Control over a container to pin a read-only preview, then move over its contents for item tooltips. The inspection key is configurable.
 

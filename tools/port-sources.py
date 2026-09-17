@@ -79,7 +79,7 @@ for p in (root/'src/main/java').rglob('*.java'):
    if p.name=='FakeChunkStorage.java':text=text.replace('public class FakeChunkStorage extends SimpleRegionStorage {','public class FakeChunkStorage extends SimpleRegionStorage {\n    public IOWorker chunkScanner(){return ((gg.monkeyclient.mixin.RegionStorageAccessor)this).monkey$worker();}').replace('CompoundTag contextNbt = ChunkMap.getChunkDataFixContextTag(worldKey, generatorKey);','CompoundTag contextNbt = new CompoundTag();contextNbt.putString("dimension",worldKey.location().toString());generatorKey.ifPresent(k->contextNbt.putString("generator",k.location().toString()));').replace('nbt = upgradeChunkTag(nbt, -1, contextNbt);','nbt.put("__context",contextNbt);nbt = upgradeChunkTag(nbt, -1);nbt.remove("__context");')
  if version=='26.3':
   if p.name=='LauncherScreen.java':text=text.replace('e.button()','(e.button()==1?0:e.button()==3?1:2)')
-  if p.name in ['ColorPickerScreen.java','CrosshairEditorScreen.java']:text=text.replace('e.button()==0','e.button()==1')
+  if p.name in ['ColorPickerScreen.java','CrosshairEditorScreen.java','SkinEditorScreen.java','FriendsScreen.java']:text=text.replace('e.button()==0','e.button()==1')
   if p.name=='ClickMixin.java':text=text.replace('m.click(info.button())','m.click(info.button()==1?0:info.button()==3?1:-1)')
   if p.name=='ScreenshotRenderMixin.java':text=text.replace('GameRenderer;render(Lnet/minecraft/client/DeltaTracker;Z)V','GameRenderer;render()V')
   text=text.replace('com.mojang.blaze3d.pipeline.RenderPipeline','com.mojang.renderpearl.api.pipeline.RenderPipeline').replace('com/mojang/blaze3d/pipeline/RenderPipeline','com/mojang/renderpearl/api/pipeline/RenderPipeline')

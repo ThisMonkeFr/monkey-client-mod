@@ -48,12 +48,44 @@ public class WorldProbe {
     if(cross.pixels.get().charAt(544)!='1')throw new IllegalStateException("Crosshair ignored click");
     mc.setScreenAndShow(new gg.monkeyclient.ui.MonkeyMenuScreen());System.out.println("MONKEY_QA_INPUT_PASS");
    }
-   if(monkeyqa$worldTicks==330)System.out.println("MONKEY_QA_MODULE_GRID");
-   if(monkeyqa$worldTicks==350&&gg.monkeyclient.integration.LauncherBridge.available())mc.setScreenAndShow(new gg.monkeyclient.ui.LauncherScreen(mc.gui.screen(),"friends"));
-   if(monkeyqa$worldTicks>=430&&monkeyqa$worldTicks<630){
-    if(!gg.monkeyclient.integration.LauncherBridge.available()){if(monkeyqa$worldTicks==430)System.out.println("MONKEY_QA_WORLD_PASS");}
-    else try{var field=gg.monkeyclient.ui.LauncherScreen.class.getDeclaredField("loaded");field.setAccessible(true);if(field.getBoolean(mc.gui.screen())){System.out.println("MONKEY_QA_BRIDGE_PASS");System.out.println("MONKEY_QA_WORLD_PASS");monkeyqa$worldTicks=630;}}catch(Exception e){throw new IllegalStateException("In-game launcher tab failed",e);}
+
+   if(monkeyqa$worldTicks==290||monkeyqa$worldTicks==330){
+    boolean found=false;for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().equals("Client Settings")){b.onClick(null,false);found=true;break;}
+    if(!found)throw new IllegalStateException("Landing menu not restored");
+    for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().equals("Home"))throw new IllegalStateException("Home tab button returned");
+    System.out.println("MONKEY_QA_MODULE_GRID");
    }
+   if(monkeyqa$worldTicks==350)mc.setScreenAndShow(new gg.monkeyclient.ui.FriendsScreen(mc.gui.screen()));
+   if(monkeyqa$worldTicks==400){monkeyqa$loaded(mc);for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().contains("Building crew")){b.onClick(null,false);break;}}
+   if(monkeyqa$worldTicks==440){try{for(String fieldName:new String[]{"messages","members"}){var field=gg.monkeyclient.ui.FriendsScreen.class.getDeclaredField(fieldName);field.setAccessible(true);if(((com.google.gson.JsonArray)field.get(mc.gui.screen())).isEmpty())throw new IllegalStateException("Native group "+fieldName+" missing");}}catch(ReflectiveOperationException e){throw new IllegalStateException(e);}}
+   if(monkeyqa$worldTicks==450){monkeyqa$loaded(mc);System.out.println("MONKEY_QA_NATIVE_FRIENDS");mc.setScreenAndShow(new gg.monkeyclient.ui.LauncherScreen(null,"screenshots"));}
+   if(monkeyqa$worldTicks==500){monkeyqa$loaded(mc);for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().isEmpty()){b.onClick(null,false);break;}for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().equals("Open")){b.onClick(null,false);break;}}
+   if(monkeyqa$worldTicks==550){if(!(mc.gui.screen() instanceof gg.monkeyclient.ui.NativeImageScreen))throw new IllegalStateException("Native image viewer missing");try{var field=gg.monkeyclient.ui.NativeScreen.class.getDeclaredField("pictures");field.setAccessible(true);if(((java.util.Map<?,?>)field.get(mc.gui.screen())).isEmpty())throw new IllegalStateException("Image preview failed to decode");}catch(ReflectiveOperationException e){throw new IllegalStateException(e);}System.out.println("MONKEY_QA_NATIVE_GALLERY");mc.setScreenAndShow(new gg.monkeyclient.ui.LauncherScreen(null,"skins"));}
+   if(monkeyqa$worldTicks==650){monkeyqa$loaded(mc);boolean found=false;for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().contains("Orange monkey")){b.onClick(null,false);found=true;break;}if(!found)throw new IllegalStateException("Shared skin library empty");}
+   if(monkeyqa$worldTicks==700){boolean found=false;for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().equals("Edit")&&b.active){b.onClick(null,false);found=true;break;}if(!found)throw new IllegalStateException("Native skin editor missing");}
+   if(monkeyqa$worldTicks==720){
+    if(!(mc.gui.screen() instanceof gg.monkeyclient.ui.SkinEditorScreen editor))throw new IllegalStateException("Skin editor did not open");
+    try{var pixels=editor.getClass().getDeclaredField("pixels");pixels.setAccessible(true);var fieldX=editor.getClass().getDeclaredField("px");fieldX.setAccessible(true);var fieldY=editor.getClass().getDeclaredField("py");fieldY.setAccessible(true);int[] data=(int[])pixels.get(editor);int old=data[0];
+     editor.mouseClicked(new net.minecraft.client.input.MouseButtonEvent(fieldX.getInt(editor)+.5,fieldY.getInt(editor)+.5,new net.minecraft.client.input.MouseButtonInfo(0,0)),false);
+     if(data[0]==old)throw new IllegalStateException("Skin pixel ignored click");
+    }catch(ReflectiveOperationException e){throw new IllegalStateException(e);}
+    System.out.println("MONKEY_QA_NATIVE_SKINS");
+    var saved=net.minecraft.network.chat.Component.literal("sample.png").withStyle(st->st.withClickEvent(new net.minecraft.network.chat.ClickEvent.OpenFile(mc.gameDirectory.toPath().resolve("screenshots/sample.png"))));
+    var feedback=gg.monkeyclient.capture.ScreenshotActions.feedback(mc.gameDirectory,net.minecraft.network.chat.Component.translatable("screenshot.success",saved));
+    if(!feedback.getString().equals("Screenshot taken [Open] [Delete]"))throw new IllegalStateException("Screenshot chat feedback missing");
+    var delete=(net.minecraft.network.chat.ClickEvent.RunCommand)feedback.getSiblings().getLast().getStyle().getClickEvent();
+    mc.player.connection.sendUnattendedCommand(delete.command(),mc.gui.screen());
+    if(!(mc.gui.screen() instanceof net.minecraft.client.gui.screens.ConfirmScreen))throw new IllegalStateException("Screenshot delete click did not stay local");
+    System.out.println("MONKEY_QA_SCREENSHOT_CHAT_PASS");
+    mc.setScreenAndShow(new gg.monkeyclient.ui.LauncherScreen(null,"screenshots"));
+   }
+   if(monkeyqa$worldTicks==790){monkeyqa$loaded(mc);System.out.println("MONKEY_QA_BRIDGE_PASS");System.out.println("MONKEY_QA_WORLD_PASS");}
+
   }
  }
+ @Unique private static void monkeyqa$loaded(Minecraft mc){
+  try{if(!(mc.gui.screen() instanceof gg.monkeyclient.ui.NativeScreen))throw new IllegalStateException("Not a native screen");var field=gg.monkeyclient.ui.NativeScreen.class.getDeclaredField("loaded");field.setAccessible(true);if(!field.getBoolean(mc.gui.screen()))throw new IllegalStateException("Native data did not load");}
+  catch(ReflectiveOperationException e){throw new IllegalStateException(e);}
+ }
+
 }

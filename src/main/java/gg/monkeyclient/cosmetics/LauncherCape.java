@@ -12,10 +12,11 @@ import java.nio.file.*;
 import java.util.UUID;
 /** Local launcher cape, using vanilla PlayerSkin and CapeLayer for all animation. */
 public final class LauncherCape {
+ private static ClientAsset.Texture body;private static net.minecraft.world.entity.player.PlayerModelType model;
  private static boolean loaded;private static UUID owner;private static ClientAsset.Texture cape,elytra;
  public static PlayerSkin apply(UUID uuid,PlayerSkin original){
   if(!loaded)load();
-  return cape!=null&&uuid.equals(owner)?new PlayerSkin(original.body(),cape,elytra!=null?elytra:original.elytra(),original.model(),original.secure()):original;
+  return uuid.equals(owner)&&(cape!=null||body!=null)?new PlayerSkin(body!=null?body:original.body(),cape!=null?cape:original.cape(),elytra!=null?elytra:original.elytra(),model!=null?model:original.model(),original.secure()):original;
  }
  private static void load(){
   loaded=true;
@@ -29,6 +30,10 @@ public final class LauncherCape {
    Path file=dir.resolve(j.get("cape").getAsString()).normalize();if(!file.startsWith(dir.normalize())||Files.size(file)>4*1024*1024)return;
    NativeImage image;try(var in=Files.newInputStream(file)){image=NativeImage.read(in);}
    if(image.getWidth()!=image.getHeight()*2||image.getWidth()>2048){image.close();return;}
+   installCape(image);
+  }catch(Exception e){MonkeyClient.LOG.warn("Could not load launcher cape: {}",e.toString());}
+ }
+ private static void installCape(NativeImage image)throws Exception{
    Identifier texture=Identifier.fromNamespaceAndPath("monkeyclient","dynamic/launcher_cape");
    // The cape atlas has opaque pixels outside the wing silhouette. Applying it
    // directly fills the elytra's transparent cutouts and makes the wings blocky.
@@ -45,6 +50,17 @@ public final class LauncherCape {
    }
    Minecraft.getInstance().getTextureManager().register(texture,new DynamicTexture(()->"Monkey Client cape",image));
    cape=new ClientAsset.ResourceTexture(texture,texture);
-  }catch(Exception e){MonkeyClient.LOG.warn("Could not load launcher cape: {}",e.toString());}
  }
+ public static void equip(String kind,String data,boolean slim,boolean equipped){
+  gg.monkeyclient.integration.LauncherBridge.WORK.execute(()->{
+   try{NativeImage decoded=equipped?NativeImage.read(java.util.Base64.getDecoder().decode(data.split(",",2)[1])):null;NativeImage image=decoded!=null&&kind.equals("skin")?SkinPixels.modern(decoded):decoded;
+    Minecraft.getInstance().execute(()->{var mc=Minecraft.getInstance();if(mc.player==null){if(image!=null)image.close();return;}if(!loaded)load();owner=mc.player.getUUID();loaded=true;
+     try{if(kind.equals("cape")){if(image==null){cape=null;elytra=null;mc.getTextureManager().release(Identifier.fromNamespaceAndPath("monkeyclient","dynamic/launcher_cape"));mc.getTextureManager().release(Identifier.fromNamespaceAndPath("monkeyclient","dynamic/launcher_elytra"));}else installCape(image);}
+      else if(image!=null){Identifier id=Identifier.fromNamespaceAndPath("monkeyclient","dynamic/local_skin");mc.getTextureManager().register(id,new DynamicTexture(()->"Monkey Client skin",image));body=new ClientAsset.ResourceTexture(id,id);model=slim?net.minecraft.world.entity.player.PlayerModelType.SLIM:net.minecraft.world.entity.player.PlayerModelType.WIDE;}
+     }catch(Exception e){if(image!=null)image.close();MonkeyClient.LOG.warn("Could not apply cosmetic",e);}
+    });
+   }catch(Exception e){MonkeyClient.LOG.warn("Could not decode cosmetic",e);}
+  });
+ }
+
 }
