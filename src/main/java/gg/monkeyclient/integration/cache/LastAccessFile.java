@@ -139,7 +139,12 @@ public class LastAccessFile implements Closeable {
 
         save();
 
-        Runtime.getRuntime().removeShutdownHook(finalSaveThread);
+        try {
+            Runtime.getRuntime().removeShutdownHook(finalSaveThread);
+        } catch (IllegalStateException alreadyShuttingDown) {
+            // The VM can be shutting down while the client disconnects. The
+            // hook and normal close both use this monitor and the closed flag.
+        }
 
         closed = true;
     }

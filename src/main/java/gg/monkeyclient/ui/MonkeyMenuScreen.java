@@ -71,7 +71,7 @@ public class MonkeyMenuScreen extends Screen {
         return addRenderableWidget(new MenuButton(x,y,w,h,text,action,()->on));
     }
     private void buildHome() {
-        int w=Math.min(220,pw-40),x=(width-w)/2,y=height/2+18;
+        int w=Math.min(220,pw-40),x=(width-w)/2,y=height/2-10;
         button(x,y,w,20,"Client Settings",()->navigate("Mods"),false);
         button(x,y+26,(w-12)/3,20,"HUD",()->minecraft.setScreenAndShow(new HudEditorScreen(this)),false);
         button(x+(w+6)/3,y+26,(w-12)/3,20,"Profiles",()->navigate("Profiles"),false);
@@ -265,7 +265,7 @@ public class MonkeyMenuScreen extends Screen {
             else{g.fill(left,top,left+pw,top+ph,(t.background&0xFFFFFF)|(alpha<<24));g.fill(left,top,left+pw,top+35,(t.panel&0xFFFFFF)|(alpha<<24));outline(g,left,top,left+pw,top+ph,t.line());}
         }
         if(page.equals("Home")) {
-            int cy=height/2-70;
+            int cy=height/2-98;
             g.blit(RenderPipelines.GUI_TEXTURED,LOGO,width/2-28,cy,0f,0f,56,56,56,56);
             g.centeredText(font,"Monkey Client",width/2,cy+64,0xFFFFFFFF);
         }

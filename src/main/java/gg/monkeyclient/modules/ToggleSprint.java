@@ -9,6 +9,8 @@ public class ToggleSprint extends Module {
  public final BoolSetting onlyForward=add(new BoolSetting("onlyForward","Forward movement only",true));
  public final BoolSetting keepInAir=add(new BoolSetting("keepInAir","Keep sprint in air",true));
  public final NumberSetting flight=add(new NumberSetting("flight","Creative flight speed",1,1,100,.1));
+ public final EnumSetting flightMode=add(new EnumSetting("flightMode","Flight boost","Hold key",List.of("Hold key","Automatic")));
+ public final KeySetting flightKey=add(new KeySetting("flightKey","Hold for flight boost",org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_ALT));
  private boolean pressed,toggled;private net.minecraft.client.player.LocalPlayer flightPlayer;private float originalFlight,lastApplied;
  private net.minecraft.server.MinecraftServer flightServer;
  private float lastServerSpeed=Float.NaN;private volatile long flightRevision;
@@ -18,7 +20,8 @@ public class ToggleSprint extends Module {
   if(p.isCreative()){
    if(flightPlayer!=p){restoreFlight();flightPlayer=p;flightServer=mc.getSingleplayerServer();originalFlight=p.getAbilities().getFlyingSpeed();lastApplied=originalFlight;}
    float serverValue=p.getAbilities().getFlyingSpeed();if(Math.abs(serverValue-lastApplied)>.0001)originalFlight=serverValue;
-   lastApplied=originalFlight*flight.getFloat();p.getAbilities().setFlyingSpeed(lastApplied);
+   boolean boost=flightMode.get().equals("Automatic")||(mc.gui.screen()==null&&flightKey.down(mc));
+   lastApplied=originalFlight*(boost?flight.getFloat():1);p.getAbilities().setFlyingSpeed(lastApplied);
    syncServerFlight(lastApplied);
   }else restoreFlight();
   boolean down=mc.options.keySprint.isDown();if(mc.gui.screen()!=null){pressed=down;return;}

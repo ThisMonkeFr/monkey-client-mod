@@ -48,6 +48,7 @@ public class Waypoints extends Module {
  public void saveDraft(){if(draft!=null){points.get().add(draft);draft=null;MonkeyClient.saveConfig();}}
  public void discardDraft(){draft=null;painting.clear();}
  public int pointColor(JsonObject p){return p.has("color")?p.get("color").getAsInt():themed.get()?MonkeyClient.theme().accent:color.resolve();}
+ public int blockColor(JsonObject p){return p.has("blockColor")?p.get("blockColor").getAsInt():pointColor(p);}
  private boolean current(JsonObject p,Minecraft mc){return p.get("world").getAsString().equals(world(mc))&&p.get("dimension").getAsString().equals(dimension(mc));}
  private void finishPainting(){if(painting.isEmpty())return;double x=0,y=0,z=0;JsonArray blocks=new JsonArray();for(var pos:painting){x+=pos.getX()+.5;y+=pos.getY()+1;z+=pos.getZ()+.5;blocks.add(pos.asLong());}draft=point("Waypoint "+(points.get().size()+1),x/painting.size(),y/painting.size(),z/painting.size());draft.add("blocks",blocks);painting.clear();Minecraft.getInstance().setScreenAndShow(new WaypointEditorScreen(null,this));}
  @Override public void onTick(){
@@ -87,7 +88,7 @@ public class Waypoints extends Module {
   if(draft!=null&&current(draft,mc))submitPoint(draft,eye,collector);
   if(areas.get())for(var element:points.get())try{var p=element.getAsJsonObject();if(current(p,mc)&&p.get("visible").getAsBoolean())submitPoint(p,eye,collector);}catch(RuntimeException ignored){}
  }
- private void submitPoint(JsonObject p,Vec3 eye,SubmitNodeCollector collector){if(p.has("blocks"))for(var v:p.getAsJsonArray("blocks"))submitBlock(BlockPos.of(v.getAsLong()),eye,collector,pointColor(p));}
+ private void submitPoint(JsonObject p,Vec3 eye,SubmitNodeCollector collector){if(p.has("blocks"))for(var v:p.getAsJsonArray("blocks"))submitBlock(BlockPos.of(v.getAsLong()),eye,collector,blockColor(p));}
  private void submitBlock(BlockPos pos,Vec3 eye,SubmitNodeCollector collector,int tint){
   if(pos.distToCenterSqr(eye.x,eye.y,eye.z)>128*128)return;
   PoseStack pose=new PoseStack();pose.translate(pos.getX()-eye.x,pos.getY()-eye.y,pos.getZ()-eye.z);

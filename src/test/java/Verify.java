@@ -51,6 +51,11 @@ public class Verify {
         check(gg.monkeyclient.modules.TiersDisplay.parseMcpvp(kits,"Sword").equals("LT2 Sword"),"MCPVP selected kit remains selectable");
         check(gg.monkeyclient.modules.TiersDisplay.tierScore("HT2 sword")<gg.monkeyclient.modules.TiersDisplay.tierScore("MT2 Crystal"),"Cross-list high tiers beat middle tiers");
         var sprint=new gg.monkeyclient.modules.ToggleSprint();sprint.flight.set(100d);check(sprint.flight.get()==100,"Flight speed accepts 100");
+        check(sprint.flightMode.get().equals("Hold key"),"Flight boost requires held key by default");
+        sprint.flightMode.set("Automatic");check(sprint.flightMode.get().equals("Automatic"),"Automatic flight remains selectable");
+        var waypoint=new gg.monkeyclient.modules.Waypoints();var point=new com.google.gson.JsonObject();point.addProperty("color",0xFF123456);
+        check(waypoint.blockColor(point)==0xFF123456,"Existing waypoint block colors inherit their marker color");
+        point.addProperty("blockColor",0xFFABCDEF);check(waypoint.blockColor(point)==0xFFABCDEF&&waypoint.pointColor(point)==0xFF123456,"Waypoint block and marker colors remain independent");
         Path compiled=Path.of(args[0]);
         try(var files=Files.list(compiled.resolve("gg/monkeyclient/mixin"))) {
             for(Path file:files.filter(p->p.toString().endsWith(".class")).toList()) {

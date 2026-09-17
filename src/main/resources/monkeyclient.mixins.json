@@ -35,7 +35,8 @@
     "WaypointWorldMixin",
     "ScreenshotMixin",
     "ScreenshotRenderMixin",
-    "ScreenshotWindowMixin"
+    "ScreenshotWindowMixin",
+    "PauseMenuMixin"
   ],
   "injectors": {
     "defaultRequire": 0

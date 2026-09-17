@@ -71,7 +71,7 @@ if a.loader=='fabric' and a.version.startswith('1.'):
  jtool('MixinAudit',[classes,';'.join(map(str,[base/'intermediary',base/'api-intermediary',cp])),out/'resources'],out/'runtime-audit.log')
 if a.loader=='fabric':
  dest=out/'resources/META-INF/jars/sodium.jar';dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(base/'sodium.jar',dest)
-jar=out/('monkeyclient-0.6.0+'+a.version+'-'+a.loader+'.jar')
+jar=out/('monkeyclient-0.7.0+'+a.version+'-'+a.loader+'.jar')
 with zipfile.ZipFile(jar,'w',zipfile.ZIP_DEFLATED) as z:
  for folder in [classes,out/'resources']:
   for file in sorted(folder.rglob('*')):

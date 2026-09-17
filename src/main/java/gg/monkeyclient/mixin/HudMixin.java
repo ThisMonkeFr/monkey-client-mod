@@ -43,6 +43,7 @@ public class HudMixin {
         if(MonkeyClient.ready()&&!isHidden()){
             var mc=Minecraft.getInstance();
             var w=MonkeyClient.modules().get(Waypoints.class);if(w.isEnabled())w.draw(g,mc);
+            gg.monkeyclient.capture.ScreenshotFeedback.draw(g);
         }
     }
 }

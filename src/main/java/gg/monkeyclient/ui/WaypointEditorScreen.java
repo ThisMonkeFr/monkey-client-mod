@@ -36,6 +36,7 @@ public class WaypointEditorScreen extends Screen {
   for(int i=0;i<ICONS.size();i++){String icon=ICONS.get(i);var b=addRenderableWidget(new MenuButton(right+i%cols*(iw+2),top+142+i/cols*24,iw,20,"",()->{p.addProperty("icon",icon);init();},()->p.has("icon")&&p.get("icon").getAsString().equals(icon)));b.setMessage(WaypointIcons.text(icon));b.setTooltip(Tooltip.create(Component.literal(icon.replace('_',' '))));}
   button(right,top+196,rw/2-3,"Marker color",()->{var color=new ColorSetting("marker","Waypoint color",module.pointColor(p));minecraft.setScreenAndShow(new ColorPickerScreen(this,color,()->p.addProperty("color",color.get())));});
   button(right+rw/2+3,top+196,rw/2-3,p.get("visible").getAsBoolean()?"Visible":"Hidden",()->{p.addProperty("visible",!p.get("visible").getAsBoolean());init();});
+  button(right,top+220,rw/2-3,"Block color",()->{var color=new ColorSetting("blocks","Waypoint block color",module.blockColor(p));minecraft.setScreenAndShow(new ColorPickerScreen(this,color,()->{p.addProperty("blockColor",color.get());MonkeyClient.saveConfig();}));});
   if(selected==-2){button(right,top+ph-30,rw/2-3,"Discard",()->{module.discardDraft();selected=-1;init();});button(right+rw/2+3,top+ph-30,rw/2-3,"Save waypoint",()->{module.saveDraft();selected=module.points.get().size()-1;init();});}
   else button(right,top+ph-30,rw,"Delete waypoint",()->{module.points.get().remove(selected);selected=-1;MonkeyClient.saveConfig();init();});
  }
@@ -44,8 +45,8 @@ public class WaypointEditorScreen extends Screen {
   g.text(font,"Waypoints",left+12,top+16,t.ink());g.text(font,module.points.get().size()+" saved",left+88,top+16,t.mutedInk());
   var p=point();if(p==null){g.centeredText(font,"Select a waypoint",right+rw/2,top+ph/2-10,t.ink());g.centeredText(font,"Hold "+module.key.display()+" in the world to paint an area",right+rw/2,top+ph/2+8,t.mutedInk());}
   else{g.text(font,"Name",right,top+44,t.mutedInk());for(int i=0;i<3;i++)g.text(font,List.of("X","Y","Z").get(i),right+i*(rw/3),top+87,t.mutedInk());g.text(font,"Icon",right,top+130,t.mutedInk());
-   if(ph>=290)g.text(font,(p.has("blocks")?p.getAsJsonArray("blocks").size()+" painted blocks":"Position marker")+" · "+p.get("dimension").getAsString().replace("minecraft:",""),right,top+231,t.mutedInk());
-   if(ph>=325)g.text(font,font.plainSubstrByWidth(p.get("world").getAsString(),rw),right,top+247,t.mutedInk());
+   if(ph>=300)g.text(font,(p.has("blocks")?p.getAsJsonArray("blocks").size()+" painted blocks":"Position marker")+" · "+p.get("dimension").getAsString().replace("minecraft:",""),right,top+250,t.mutedInk());
+   if(ph>=335)g.text(font,font.plainSubstrByWidth(p.get("world").getAsString(),rw),right,top+266,t.mutedInk());
   }
   if(filtered.isEmpty())g.text(font,"No waypoints here",left+14,top+106,t.mutedInk());
   super.extractRenderState(g,mx,my,d);
