@@ -1,1 +1,33 @@
-# monkey-client-mod
+# Monkey Client mod 0.5.0
+
+Eight Minecraft versions: 26.3, 26.2, 26.1.2, 26.1.1, 26.1, 1.21.11, 1.21.10 and 1.21.9. Fabric builds use Loader 0.19.5+ and the matching Fabric API. Forge builds are provided for every listed version except 26.3, for which Forge has no official release. Java 25 is required for 26.x; Java 21 for 1.21.x.
+
+## Controls
+
+- Hold Right Shift for 0.3 seconds to open the animated client landing menu.
+- Mods opens the compact module grid; settings open beside a module/HUD preview.
+- Theme selects Vanilla (default) or Custom and can match the launcher accent.
+- Profiles saves whole module configurations, with create/apply/save/copy/rename/delete and clipboard import/export.
+- HUD opens the position editor. Drag to move, scroll to resize, Ctrl-drag to snap.
+- Zoom defaults to C. The world, both hands and HUD scale together without fading.
+- Waypoints manager defaults to M; the module settings allow rebinding it. There are exactly 20 Minecraft block icons.
+- Container previews appear without Shift by default. Hold Alt + Left Control over a container to pin a read-only preview, then move over its contents for item tooltips. The inspection key is configurable.
+
+Settings persist in `config/monkeyclient.json`. Named module profiles persist in `config/monkeyclient/mod-profiles.json`. Custom item PNGs belong in `config/monkeyclient/textures/`.
+
+World Editor follows native video render-distance changes in both directions. Fabric includes Sodium and the terrain cache supports extended distances; Forge uses the native renderer's 32-chunk limit. Creative flight's speed slider now reaches 100. Tier Display supports a selected MCPVP kit, the best MCPVP kit, and best gamemode across all three integrated tier providers.
+
+## Building the version-specific releases
+
+Install Python 3.11+ and JDK 25. From this directory run:
+
+```powershell
+python tools/build-release.py --version 26.2 --loader fabric --java 'C:/Program Files/Eclipse Adoptium/jdk-25.0.2.10-hotspot/bin/java.exe'
+python tools/build-release.py --version 1.21.11 --loader forge --java 'C:/Program Files/Eclipse Adoptium/jdk-25.0.2.10-hotspot/bin/java.exe'
+```
+
+Use your actual Java executable path. The tool downloads pinned SDK dependencies from Mojang, Fabric, Maven Central, Modrinth and Forge, compiles the small build helpers, generates the version adapters, compiles Java 21/25 bytecode, audits the mixins and packages the correct JAR. Legacy Fabric builds are remapped to intermediary names. Forge uses its official installer to generate patched named classes. Downloads are cached under `build/sdk`; output is under `build/release/<version>-<loader>/`. No Minecraft classes or full mapping files are distributed in the mod.
+
+`tools/versions.lock.json` records the exact game metadata and Fabric API/Sodium download checksums. `src/main/java` targets 26.2; `ports` and `tools/port-sources.py` contain the API adaptations. The base Gradle project remains useful for 26.2 development; use the Python release builder for the complete loader/version matrix.
+
+All 15 release combinations compile and pass their native mixin audits. The fresh-download source builder was also verified for 26.2 Fabric. A live Minecraft/GPU session has not been validated here. See RELEASE-NOTES.md for the release's verification scope.

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "monkeyclient",
+  "version": "${version}",
+  "name": "Monkey Client",
+  "description": "Minecraft HUD modules, a customizable mod menu, F3 editor and quality-of-life tools.",
+  "authors": [
+    "ThisMonkeFr"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ThisMonkeFr/monkey-client",
+    "sources": "https://github.com/ThisMonkeFr/monkey-client-mod"
+  },
+  "license": [
+    "MIT",
+    "LGPL-3.0-or-later"
+  ],
+  "icon": "assets/monkeyclient/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "gg.monkeyclient.MonkeyClient"
+    ],
+    "sodium:config_api_user": [
+      "gg.monkeyclient.integration.cache.SodiumConfigEntrypoint"
+    ]
+  },
+  "mixins": [
+    "monkeyclient.mixins.json",
+    "monkeycache.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=25",
+    "fabric-api": "*",
+    "sodium": ">=0.9.1"
+  },
+  "jars": [
+    {
+      "file": "META-INF/jars/sodium-fabric-0.9.2+mc26.2.jar"
+    }
+  ]
+}

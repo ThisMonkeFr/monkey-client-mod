@@ -1,0 +1,16 @@
+// pluginManagement must come before the plugins block, or Gradle refuses the
+// whole script.
+pluginManagement {
+    repositories {
+        maven { name = 'Fabric'; url = 'https://maven.fabricmc.net/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    // Lets Gradle download a JDK 25 automatically if you do not have one.
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'monkeyclient'

@@ -1,0 +1,346 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/monkey.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/mctiers.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/subtiers.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/mcpvp.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/vanilla.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/uhc.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pot.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/nethop.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/smp.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/sword.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/axe.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/mace.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/minecart.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/dia_crystal.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/debuff.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/elytra.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/speed.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/creeper.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/manhunt.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/dia_smp.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/bow.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/bed.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/og_vanilla.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/trident.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_crystal.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_sword.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_spear.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_mace.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_early.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_shield.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_pot.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_nether.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_late.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_dia_smp.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_creeper.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_smp.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_cart.png",
+      "height": 9
+    },
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/pvp_bow.png",
+      "height": 9
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "file": "monkeyclient:icons/monkey.png",
+      "height": 9
+    }
+  ]
+}

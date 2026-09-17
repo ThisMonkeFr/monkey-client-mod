@@ -1,0 +1,184 @@
+{
+  "providers": [
+    {
+      "file": "monkeyclient:waypoints/grass.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/dirt.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/stone.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/cobble.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/oak.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/bricks.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/sand.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/gravel.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/obsidian.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/netherrack.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/end_stone.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/glowstone.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/diamond_block.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/emerald_block.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/gold.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/copper.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/amethyst.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/blue_ice.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/cherry.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    },
+    {
+      "file": "monkeyclient:waypoints/glass.png",
+      "ascent": 8,
+      "chars": [
+        ""
+      ],
+      "height": 9,
+      "type": "bitmap"
+    }
+  ]
+}

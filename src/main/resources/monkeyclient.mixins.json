@@ -1,0 +1,40 @@
+{
+  "required": true,
+  "package": "gg.monkeyclient.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "BlockOutlineMixin",
+    "CapeMixin",
+    "ContainerMixin",
+    "DebugEntriesMixin",
+    "DebugPositionMixin",
+    "DebugOverlayMixin",
+    "FogMixin",
+    "FovMixin",
+    "GammaMixin",
+    "GuiProjectionMixin",
+    "HudMixin",
+    "ItemResolverMixin",
+    "ItemStateMixin",
+    "MotionBlurMixin",
+    "MouseMixin",
+    "NametagMixin",
+    "PostChainAccessor",
+    "PostPassAccessor",
+    "SprintMixin",
+    "TabPingMixin",
+    "WindowScaleMixin",
+    "ClickMixin",
+    "NameScaleMixin",
+    "apple.HudMixin",
+    "apple.FoodDataMixin",
+    "apple.ItemStackMixin",
+    "apple.ClientTooltipComponentMixin",
+    "SkyEditorMixin",
+    "CloudEditorMixin",
+    "WaypointWorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "targets": {
+    "monkeyclient:result": {}
+  },
+  "passes": [
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "monkeyclient:post/fade",
+      "inputs": [
+        {
+          "sampler_name": "Current",
+          "target": "minecraft:main"
+        },
+        {
+          "sampler_name": "History",
+          "target": "monkeyclient:world"
+        }
+      ],
+      "output": "monkeyclient:result",
+      "uniforms": {
+        "MotionSettings": [
+          {
+            "type": "float",
+            "value": 0,
+            "name": "Retention"
+          },
+          {
+            "type": "float",
+            "value": 0,
+            "name": "PadA"
+          },
+          {
+            "type": "float",
+            "value": 0,
+            "name": "PadB"
+          },
+          {
+            "type": "float",
+            "value": 0,
+            "name": "PadC"
+          }
+        ]
+      }
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "monkeyclient:post/copy",
+      "inputs": [
+        {
+          "sampler_name": "Source",
+          "target": "monkeyclient:result"
+        }
+      ],
+      "output": "minecraft:main"
+    }
+  ]
+}
