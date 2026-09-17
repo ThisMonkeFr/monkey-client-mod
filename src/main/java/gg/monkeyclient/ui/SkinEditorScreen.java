@@ -21,7 +21,7 @@ public final class SkinEditorScreen extends NativeScreen {
   else {for(int y=0;y<ih;y++)for(int x=0;x<iw;x++)pixels[y*iw+x]=kind.equals("cape")?0xFFFF7A18:0xFF787878;}
  }
  private static NativeImage decode(String kind,String data)throws Exception{var image=NativeImage.read(Base64.getDecoder().decode(data.split(",",2)[1]));return kind.equals("skin")?gg.monkeyclient.cosmetics.SkinPixels.modern(image):image;}
- @Override protected void init(){super.init();upload();}
+ @Override protected void onOpened(){upload();}
  @Override protected void rebuild(){clearWidgets();cell=Math.max(1,Math.min((pw-154)/iw,(ph-100)/ih));px=left+12;py=body;int x=px+iw*cell+14,w=left+pw-12-x;
   var f=field(left+12,top+33,pw-88,"Name",name,48);f.setResponder(v->{name=v;dirty=true;});button(left+pw-68,top+33,56,"Back",this::onClose);
   String[] tools={"Pen","Erase","Fill","Pick"};for(int i=0;i<4;i++){String t=tools[i];addRenderableWidget(new MenuButton(x+i%2*(w/2+2),py+i/2*24,w/2-2,20,t,()->{tool=t;rebuild();},()->tool.equals(t)));}

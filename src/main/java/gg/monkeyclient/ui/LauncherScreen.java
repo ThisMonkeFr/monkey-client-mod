@@ -12,7 +12,7 @@ public class LauncherScreen extends NativeScreen {
  private int offset,total,columns,rows,cardW,cardH,limit=12;private boolean current,hasMore;private final Consumer<JsonObject> pick;
  public LauncherScreen(Screen parent,String tab){this(parent,tab,null);}
  public LauncherScreen(Screen parent,String tab,Consumer<JsonObject> pick){super(parent,tab.equals("screenshots")?"Screenshots":"Skins & Capes");this.tab=tab;this.pick=pick;}
- @Override protected void init(){super.init();load();}
+ @Override protected void onOpened(){load();}
  @Override protected void rebuild(){chrome(tab);if(tab.equals("screenshots"))gallery();else library();}
  private void load(){if(tab.equals("screenshots")){call("/screenshots/list",obj("offset",offset,"limit",limit,"current",current),this::received);}else call("/library/list",obj("kind",kind,"offset",offset,"limit",limit),this::received);}
  private void received(JsonObject r){items=array(r,"items");total=r.has("total")?r.get("total").getAsInt():0;hasMore=yes(r,"hasMore");loaded=true;clearPictures();if(items.asList().stream().noneMatch(v->str(v.getAsJsonObject(),"id").equals(selected))){selected="";item=null;}for(var e:items){var row=e.getAsJsonObject();picture(str(row,"id"),str(row,"thumbnail"));}rebuild();if(item!=null)picture("selected",str(item,"data"));}

@@ -20,7 +20,8 @@ public abstract class NativeScreen extends Screen {
  private final Map<String,Picture> pictures=new HashMap<>();
  protected record Picture(Identifier id,int width,int height){}
  protected NativeScreen(Screen parent,String title){super(Component.literal(title));this.parent=parent;}
- @Override protected void init(){alive=true;generation++;pw=Math.min(760,width-16);ph=Math.min(430,height-16);left=(width-pw)/2;top=(height-ph)/2;body=top+62;bottom=top+ph-30;rebuild();}
+ @Override protected void init(){boolean opening=!alive;if(opening){alive=true;generation++;}pw=Math.min(760,width-16);ph=Math.min(430,height-16);left=(width-pw)/2;top=(height-ph)/2;body=top+62;bottom=top+ph-30;rebuild();if(opening)onOpened();}
+ protected void onOpened(){}
  protected abstract void rebuild();
  protected void chrome(String tab){clearWidgets();clearFocus();button(left+pw-62,top+8,54,"Back",this::onClose);int x=left+10;for(String t:List.of("Friends","Screenshots","Skins")){String target=t.toLowerCase(Locale.ROOT);addRenderableWidget(new MenuButton(x,top+32,Math.min(96,(pw-24)/3),20,t,()->open(parent,target),()->tab.equals(target)));x+=Math.min(100,(pw-20)/3);} }
  public static void open(Screen parent,String tab){Minecraft.getInstance().setScreenAndShow(tab.equals("friends")?new FriendsScreen(parent):new LauncherScreen(parent,tab));}

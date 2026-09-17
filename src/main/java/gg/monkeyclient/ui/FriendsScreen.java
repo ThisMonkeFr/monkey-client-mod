@@ -13,7 +13,7 @@ public final class FriendsScreen extends NativeScreen {
  private JsonObject account=new JsonObject(),conversation,attachment;private String text="";private boolean group,sending,polling;private long revision=-1,nextPoll;
  private int contactsPage,messageScroll,memberPage,rail,side,chatX,chatW;private EditBox composer;private final Set<String> avatars=new HashSet<>();
  public FriendsScreen(Screen parent){super(parent,"Friends");}
- @Override protected void init(){super.init();avatars.clear();refresh();}
+ @Override protected void onOpened(){avatars.clear();refresh();}
  private void refresh(){call("/social",new JsonObject(),r->{friends=array(r,"friends");groups=array(r,"groups");requests=array(r,"requests");account=r.getAsJsonObject("account");if(conversation!=null){String id=target();conversation=(group?groups:friends).asList().stream().map(JsonElement::getAsJsonObject).filter(c->id.equals(str(c,group?"id":"uuid"))).findFirst().orElse(null);}loaded=true;rebuild();if(conversation!=null)history();if(!yes(r,"connected"))status="MonkeyNet is reconnecting...";});}
  private void net(String method,ConsumerResult done,JsonElement...args){JsonArray a=new JsonArray();for(var v:args)a.add(v);call("/net",obj("method",method,"args",a),done::accept);}
  private interface ConsumerResult{void accept(JsonObject value);}
