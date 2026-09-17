@@ -32,7 +32,7 @@ public class Zoom extends Module {
         double dt = lastFrame == 0 ? 0 : Math.min(0.1, (now - lastFrame) / 1e9); lastFrame = now;
         double amount = smooth.get() <= 0 ? 1 : 1 - Math.exp(-dt * 5 / smooth.get());
         factor += ((active() ? 1 / scrollDivisor : 1) - factor) * amount;
-        crosshairOpacity += ((active() ? 0 : 1) - crosshairOpacity) * (1 - Math.exp(-dt / .16));
+        crosshairOpacity += ((active() ? 0 : 1) - crosshairOpacity) * (1 - Math.exp(-dt / (active() ? .035 : .10)));
         if (crosshairOpacity < .002) crosshairOpacity = 0;
         if (crosshairOpacity > .998) crosshairOpacity = 1;
     }

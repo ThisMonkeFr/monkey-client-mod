@@ -70,7 +70,7 @@ public class Waypoints extends Module {
   var camera=mc.gameRenderer.mainCamera();var eye=camera.position();camera.getViewRotationProjectionMatrix(matrix);
   String world=world(mc),dim=dimension(mc);int sw=mc.getWindow().getGuiScaledWidth(),sh=mc.getWindow().getGuiScaledHeight();
   for(var element:points.get())try{
-   JsonObject p=element.getAsJsonObject();if(!p.get("world").getAsString().equals(world)||!p.get("dimension").getAsString().equals(dim)||!p.get("visible").getAsBoolean())continue;
+   JsonObject p=element.getAsJsonObject();if(!p.get("world").getAsString().equals(world)||!p.get("dimension").getAsString().equals(dim)||!p.get("visible").getAsBoolean()||(p.has("showName")&&!p.get("showName").getAsBoolean()))continue;
    double dx=p.get("x").getAsDouble()-eye.x,dy=p.get("y").getAsDouble()-eye.y,dz=p.get("z").getAsDouble()-eye.z,dist=Math.sqrt(dx*dx+dy*dy+dz*dz);
    if(dist>maxDistance.get())continue;
    clip.set((float)dx,(float)dy,(float)dz,1).mul(matrix);if(clip.w<=0)continue;
@@ -88,7 +88,7 @@ public class Waypoints extends Module {
   if(draft!=null&&current(draft,mc))submitPoint(draft,eye,collector);
   if(areas.get())for(var element:points.get())try{var p=element.getAsJsonObject();if(current(p,mc)&&p.get("visible").getAsBoolean())submitPoint(p,eye,collector);}catch(RuntimeException ignored){}
  }
- private void submitPoint(JsonObject p,Vec3 eye,SubmitNodeCollector collector){if(p.has("blocks"))for(var v:p.getAsJsonArray("blocks"))submitBlock(BlockPos.of(v.getAsLong()),eye,collector,blockColor(p));}
+ private void submitPoint(JsonObject p,Vec3 eye,SubmitNodeCollector collector){if(p.has("showBlocks")&&!p.get("showBlocks").getAsBoolean())return;if(p.has("blocks"))for(var v:p.getAsJsonArray("blocks"))submitBlock(BlockPos.of(v.getAsLong()),eye,collector,blockColor(p));}
  private void submitBlock(BlockPos pos,Vec3 eye,SubmitNodeCollector collector,int tint){
   if(pos.distToCenterSqr(eye.x,eye.y,eye.z)>128*128)return;
   PoseStack pose=new PoseStack();pose.translate(pos.getX()-eye.x,pos.getY()-eye.y,pos.getZ()-eye.z);

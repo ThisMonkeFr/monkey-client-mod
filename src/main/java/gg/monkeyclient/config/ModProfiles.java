@@ -10,6 +10,8 @@ public final class ModProfiles {
  public record Profile(String id,String name,JsonObject settings){}
  private final List<Profile> profiles=new ArrayList<>();
  private final Path file=FabricLoader.getInstance().getConfigDir().resolve("monkeyclient/mod-profiles.json");
+ private String activeId="";
+ private final Path activeFile=file.resolveSibling("active-profile.txt");
  private final Gson gson=new GsonBuilder().setPrettyPrinting().create();
  public ModProfiles() throws IOException {
   if(Files.exists(file)){
@@ -17,13 +19,18 @@ public final class ModProfiles {
    for(var element:root){var p=element.getAsJsonObject();profiles.add(new Profile(p.get("id").getAsString(),p.get("name").getAsString(),p.getAsJsonObject("settings")));}
   }
   if(profiles.isEmpty())create("Default",ConfigManager.snapshot());
+  if(Files.exists(activeFile))activeId=Files.readString(activeFile).strip();else if(!profiles.isEmpty()){activeId=profiles.get(0).id;saveActive();}
  }
+ public String activeName(){return profiles.stream().filter(p->p.id.equals(activeId)).map(Profile::name).findFirst().orElse("Custom settings");}
+ public boolean active(int index){return profiles.get(index).id.equals(activeId);}
+ private void saveActive()throws IOException{Files.createDirectories(activeFile.getParent());Files.writeString(activeFile,activeId);}
+ public void preset(String name)throws IOException{if(!java.util.Set.of("PvP","Hoplite").contains(name))throw new IOException("Unknown preset");try(var input=ModProfiles.class.getResourceAsStream("/assets/monkeyclient/presets/"+name.toLowerCase(java.util.Locale.ROOT)+".json")){if(input==null)throw new IOException("Preset missing");importProfile(new String(input.readAllBytes(),java.nio.charset.StandardCharsets.UTF_8));apply(profiles.size()-1);}}
  public List<Profile> all(){return List.copyOf(profiles);}
  public void create(String name,JsonObject settings)throws IOException {if(profiles.size()>=100)throw new IOException("Maximum of 100 profiles");profiles.add(new Profile(UUID.randomUUID().toString(),clean(name),settings.deepCopy()));save();}
  public void rename(int index,String name)throws IOException{var p=profiles.get(index);profiles.set(index,new Profile(p.id,clean(name),p.settings));save();}
  public void update(int index)throws IOException{var p=profiles.get(index);profiles.set(index,new Profile(p.id,p.name,ConfigManager.snapshot()));save();}
  public void delete(int index)throws IOException{profiles.remove(index);save();}
- public void apply(int index){ConfigManager.apply(profiles.get(index).settings.deepCopy());ConfigManager.save();}
+ public void apply(int index){activeId=profiles.get(index).id;try{saveActive();}catch(IOException e){gg.monkeyclient.MonkeyClient.LOG.warn("Could not save active profile",e);}ConfigManager.apply(profiles.get(index).settings.deepCopy());ConfigManager.save();}
  public String export(int index){var p=profiles.get(index);JsonObject out=new JsonObject();out.addProperty("format","monkeyclient-profile");out.addProperty("name",p.name);out.add("settings",p.settings);return gson.toJson(out);}
  public void importProfile(String text)throws IOException{
   if(text==null||text.length()>2_000_000)throw new IOException("Profile is empty or too large");

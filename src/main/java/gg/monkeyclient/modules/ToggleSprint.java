@@ -11,6 +11,7 @@ public class ToggleSprint extends Module {
  public final NumberSetting flight=add(new NumberSetting("flight","Creative flight speed",1,1,100,.1));
  public final EnumSetting flightMode=add(new EnumSetting("flightMode","Flight boost","Hold key",List.of("Hold key","Automatic")));
  public final KeySetting flightKey=add(new KeySetting("flightKey","Hold for flight boost",org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_ALT));
+ private net.minecraft.client.player.LocalPlayer recoveredPlayer;
  private boolean pressed,toggled;private net.minecraft.client.player.LocalPlayer flightPlayer;private float originalFlight,lastApplied;
  private net.minecraft.server.MinecraftServer flightServer;
  private float lastServerSpeed=Float.NaN;private volatile long flightRevision;
@@ -18,10 +19,9 @@ public class ToggleSprint extends Module {
  @Override public void onTick(){
   var mc=Minecraft.getInstance();var p=mc.player;if(p==null){restoreFlight();return;}
   if(p.isCreative()){
-   if(flightPlayer!=p){restoreFlight();flightPlayer=p;flightServer=mc.getSingleplayerServer();originalFlight=p.getAbilities().getFlyingSpeed();lastApplied=originalFlight;}
-   float serverValue=p.getAbilities().getFlyingSpeed();if(Math.abs(serverValue-lastApplied)>.0001)originalFlight=serverValue;
+   if(flightPlayer!=p){restoreFlight();flightPlayer=p;flightServer=mc.getSingleplayerServer();originalFlight=.05f;lastApplied=originalFlight;}
    boolean boost=flightMode.get().equals("Automatic")||(mc.gui.screen()==null&&flightKey.down(mc));
-   lastApplied=originalFlight*(boost?flight.getFloat():1);p.getAbilities().setFlyingSpeed(lastApplied);
+   lastApplied=flightSpeed(boost?flight.get():1);p.getAbilities().setFlyingSpeed(lastApplied);
    syncServerFlight(lastApplied);
   }else restoreFlight();
   boolean down=mc.options.keySprint.isDown();if(mc.gui.screen()!=null){pressed=down;return;}
@@ -32,6 +32,11 @@ public class ToggleSprint extends Module {
   if(p.isUsingItem()||(!p.isCreative()&&p.getFoodData().getFoodLevel()<=6)||p.isFallFlying()||p.isCrouching())return;
   if(wanted)p.setSprinting(true);else if(mode.get().equals("Toggle"))p.setSprinting(false);
  }
+ public static float flightSpeed(double multiplier){return .05f*(float)(Double.isFinite(multiplier)?Math.max(1,Math.min(100,multiplier)):1);}
+ public void recoverSavedFlight(Minecraft mc){
+  var p=mc.player;if(p==recoveredPlayer)return;recoveredPlayer=p;
+  if(p!=null&&p.isCreative()&&mc.getSingleplayerServer()!=null){p.getAbilities().setFlyingSpeed(.05f);var server=mc.getSingleplayerServer();var id=p.getUUID();server.execute(()->{var sp=server.getPlayerList().getPlayer(id);if(sp!=null&&sp.isCreative())sp.getAbilities().setFlyingSpeed(.05f);});}
+ }
  private void syncServerFlight(float speed){
   if(flightServer==null||lastServerSpeed==speed)return;
   var server=flightServer;var uuid=flightPlayer.getUUID();long revision=++flightRevision;
@@ -40,7 +45,7 @@ public class ToggleSprint extends Module {
  }
  private void restoreFlight(){if(flightPlayer!=null){
   var player=flightPlayer;float original=originalFlight;var server=flightServer;++flightRevision;
-  if(Math.abs(player.getAbilities().getFlyingSpeed()-lastApplied)<.0001)player.getAbilities().setFlyingSpeed(original);
+  player.getAbilities().setFlyingSpeed(original);
   if(server!=null){var uuid=player.getUUID();float applied=lastServerSpeed;server.execute(()->{var p=server.getPlayerList().getPlayer(uuid);if(p!=null&&Math.abs(p.getAbilities().getFlyingSpeed()-applied)<.0001)p.getAbilities().setFlyingSpeed(original);});}
   flightPlayer=null;flightServer=null;lastServerSpeed=Float.NaN;
  }}

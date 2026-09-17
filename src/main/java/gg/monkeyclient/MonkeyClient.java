@@ -43,6 +43,7 @@ public class MonkeyClient implements ClientModInitializer {
 
     private static void onTick(Minecraft mc) {
         if (!ready()) return;
+        modules.get(gg.monkeyclient.modules.ToggleSprint.class).recoverSavedFlight(mc);
         modules.tick();
         gg.monkeyclient.capture.ScreenshotFeedback.tick();
         pollMenuHold(mc);

@@ -15,6 +15,6 @@ public class ScreenshotMixin {
  private static Consumer<NativeImage> monkey$preview(Consumer<NativeImage> original){return image->{try{gg.monkeyclient.capture.ScreenshotFeedback.captured(image);}catch(Exception error){gg.monkeyclient.MonkeyClient.LOG.warn("Screenshot preview unavailable",error);}original.accept(image);};}
  @Inject(method="grab(Ljava/io/File;Lcom/mojang/blaze3d/pipeline/RenderTarget;Ljava/util/function/Consumer;)V",at=@At("HEAD"),cancellable=true,require=1)
  private static void monkey$capture(File directory,RenderTarget target,Consumer<Component> feedback,CallbackInfo ci){
-  if(!ScreenshotCapture.saving()){ScreenshotCapture.request(directory,feedback);ci.cancel();}
+  if(!ScreenshotCapture.saving()){ScreenshotCapture.request(directory,message->{if(message.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents content&&content.getKey().equals("screenshot.success"))return;feedback.accept(message);});ci.cancel();}
  }
 }

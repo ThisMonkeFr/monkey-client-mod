@@ -51,6 +51,11 @@ public class Verify {
         check(gg.monkeyclient.modules.TiersDisplay.parseMcpvp(kits,"Sword").equals("LT2 Sword"),"MCPVP selected kit remains selectable");
         check(gg.monkeyclient.modules.TiersDisplay.tierScore("HT2 sword")<gg.monkeyclient.modules.TiersDisplay.tierScore("MT2 Crystal"),"Cross-list high tiers beat middle tiers");
         var sprint=new gg.monkeyclient.modules.ToggleSprint();sprint.flight.set(100d);check(sprint.flight.get()==100,"Flight speed accepts 100");
+        check(gg.monkeyclient.modules.ToggleSprint.flightSpeed(10)==.5f,"10x flight is always ten times vanilla speed");
+        check(gg.monkeyclient.modules.ToggleSprint.flightSpeed(1)==.05f,"Disabled boost restores vanilla flight");
+        check(gg.monkeyclient.modules.ToggleSprint.flightSpeed(Double.NaN)==.05f,"Invalid saved flight cannot poison movement");
+        check(gg.monkeyclient.modules.ToggleSprint.flightSpeed(1000000)==5f,"Flight cannot exceed configured maximum");
+        for(String preset:List.of("pvp","hoplite")){var data=com.google.gson.JsonParser.parseString(Files.readString(Path.of("src/main/resources/assets/monkeyclient/presets/"+preset+".json"))).getAsJsonObject();check(data.get("format").getAsString().equals("monkeyclient-profile"),"Preset format "+preset);check(data.getAsJsonObject("settings").getAsJsonObject("modules").size()==22,"Preset covers all modules "+preset);}
         check(sprint.flightMode.get().equals("Hold key"),"Flight boost requires held key by default");
         sprint.flightMode.set("Automatic");check(sprint.flightMode.get().equals("Automatic"),"Automatic flight remains selectable");
         var waypoint=new gg.monkeyclient.modules.Waypoints();var point=new com.google.gson.JsonObject();point.addProperty("color",0xFF123456);

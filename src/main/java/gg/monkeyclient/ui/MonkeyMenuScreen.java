@@ -23,7 +23,7 @@ public class MonkeyMenuScreen extends Screen {
     private gg.monkeyclient.config.ModProfiles profiles;
     private int profileIndex;
     private String profileName="";
-    private String page="Home",query="";
+    private String page="Mods",query="";
     private Category category;
     private Module selected;
     private Screen parent;
@@ -57,9 +57,10 @@ public class MonkeyMenuScreen extends Screen {
         }
         top=(height-ph)/2;
         if(page.equals("Home")) { buildHome(); return; }
-        int tabW=Math.min(68,(pw-48)/5),tx=left+8;
-        for(String tab:List.of("Home","Mods","Profiles","Theme","HUD")){
-            button(tx,top+8,tabW-3,20,tab,()->{if(tab.equals("HUD"))minecraft.setScreenAndShow(new HudEditorScreen(this));else navigate(tab);},page.equals(tab));tx+=tabW;
+        int tabW=Math.min(76,(pw-40)/7),tx=left+8;
+        for(String tab:List.of("Mods","Profiles","Theme","HUD","Friends","Screenshots","Skins")){
+            String label=tabW<64&&tab.equals("Screenshots")?"Shots":tabW<48&&tab.equals("Profiles")?"Sets":tabW<48&&tab.equals("Friends")?"Chat":tab;
+            var tabButton=button(tx,top+8,tabW-3,20,label,()->{if(tab.equals("HUD"))minecraft.setScreenAndShow(new HudEditorScreen(this));else if(java.util.Set.of("Friends","Screenshots","Skins").contains(tab))minecraft.setScreenAndShow(new LauncherScreen(this,tab.toLowerCase(java.util.Locale.ROOT)));else navigate(tab);},page.equals(tab));tabButton.setTooltip(Tooltip.create(Component.literal(tab)));tx+=tabW;
         }
         button(left+pw-28,top+8,20,20,"X",this::onClose,false);
         bodyTop=top+64; bodyBottom=top+ph-8;
@@ -308,19 +309,21 @@ public class MonkeyMenuScreen extends Screen {
     private void profileAction(ProfileAction action){try{action.run();status="";}catch(Exception ex){status=ex.getMessage()==null?"Could not update profiles":ex.getMessage();}build();}
     private void buildProfiles(){
         if(profiles==null)try{profiles=new gg.monkeyclient.config.ModProfiles();}catch(Exception ex){status="Could not read mod profiles";return;}
-        button(left+12,top+39,100,20,"Import",()->profileAction(()->{profiles.importProfile(minecraft.keyboardHandler.getClipboard());profileIndex=profiles.all().size()-1;}),false).setTooltip(Tooltip.create(Component.literal("Import a profile copied to the clipboard")));
-        button(left+118,top+39,100,20,"Export",()->profileAction(()->{if(!profiles.all().isEmpty())minecraft.keyboardHandler.setClipboard(profiles.export(profileIndex));}),false).setTooltip(Tooltip.create(Component.literal("Copy this profile to the clipboard")));
+        button(left+12,top+39,90,20,"Import code",()->minecraft.setScreenAndShow(new ProfileCodeScreen(this,profiles,-1)),false);
+        button(left+106,top+39,90,20,"Share code",()->{if(!profiles.all().isEmpty())minecraft.setScreenAndShow(new ProfileCodeScreen(this,profiles,profileIndex));},false);
+        button(left+200,top+39,80,20,"Presets",()->minecraft.setScreenAndShow(new PresetsScreen(this,profiles)),false);
+        labels.add(new Label("Current profile: "+profiles.activeName(),left+12,top+68,pw-24));bodyTop=top+84;
         int columns=pw>=480?3:2,gap=6,cw=(pw-24-(columns-1)*gap)/columns;
         var list=profiles.all();profileIndex=Math.max(0,Math.min(profileIndex,list.size()-1));
-        int rows=Math.max(1,(ph-165)/48);maxScroll=Math.max(0,(list.size()+columns-1)/columns-rows);scroll=Math.min(scroll,maxScroll);
+        int rows=Math.max(1,(ph-185)/48);maxScroll=Math.max(0,(list.size()+columns-1)/columns-rows);scroll=Math.min(scroll,maxScroll);
         for(int i=scroll*columns;i<Math.min(list.size(),(scroll+rows)*columns);i++){
             int index=i;var p=list.get(i);var b=button(left+12+i%columns*(cw+gap),bodyTop+(i/columns-scroll)*48,cw,42,p.name(),()->{profileIndex=index;profileName=p.name();build();},profileIndex==i);
-            b.setMessage(Component.empty().append(gg.monkeyclient.render.WaypointIcons.text("dirt")).append(" "+p.name()));
+            b.setMessage(Component.empty().append(gg.monkeyclient.render.WaypointIcons.text("dirt")).append(" "+p.name()+(profiles.active(i)?" [Active]":"")));
         }
         int controlsY=top+ph-82,bw=(pw-28)/5;
         if(!list.isEmpty()){
-            button(left+12,controlsY,bw-3,20,"Apply",()->profileAction(()->profiles.apply(profileIndex)),false);
-            button(left+12+bw,controlsY,bw-3,20,"Save",()->profileAction(()->profiles.update(profileIndex)),false);
+            button(left+12,controlsY,bw-3,20,"Use profile",()->profileAction(()->profiles.apply(profileIndex)),false);
+            button(left+12+bw,controlsY,bw-3,20,"Save changes",()->profileAction(()->profiles.update(profileIndex)),false);
             button(left+12+bw*2,controlsY,bw-3,20,"Copy",()->profileAction(()->{var p=profiles.all().get(profileIndex);profiles.create(p.name()+" copy",p.settings());}),false);
             button(left+12+bw*3,controlsY,bw-3,20,"Rename",()->profileAction(()->profiles.rename(profileIndex,profileName)),false);
             button(left+12+bw*4,controlsY,bw-3,20,"Delete",()->profileAction(()->profiles.delete(profileIndex)),false);
