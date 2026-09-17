@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class WorldProbe {
  @Unique private int monkeyqa$ticks,monkeyqa$worldTicks;
  @Unique private boolean monkeyqa$started;
+ @Unique private long monkeyqa$groupWait;
  @Inject(method="tick",at=@At("TAIL"),require=1)
  private void monkeyqa$tick(CallbackInfo ci){
   Minecraft mc=(Minecraft)(Object)this;
@@ -56,8 +57,8 @@ public class WorldProbe {
     System.out.println("MONKEY_QA_MODULE_GRID");
    }
    if(monkeyqa$worldTicks==350)mc.setScreenAndShow(new gg.monkeyclient.ui.FriendsScreen(mc.gui.screen()));
-   if(monkeyqa$worldTicks==400){monkeyqa$loaded(mc);for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().contains("Building crew")){b.onClick(null,false);break;}}
-   if(monkeyqa$worldTicks==440){try{for(String fieldName:new String[]{"messages","members"}){var field=gg.monkeyclient.ui.FriendsScreen.class.getDeclaredField(fieldName);field.setAccessible(true);if(((com.google.gson.JsonArray)field.get(mc.gui.screen())).isEmpty())throw new IllegalStateException("Native group "+fieldName+" missing");}}catch(ReflectiveOperationException e){throw new IllegalStateException(e);}}
+   if(monkeyqa$worldTicks==400){monkeyqa$loaded(mc);boolean found=false;for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().contains("Building crew")){b.onClick(null,false);found=true;break;}if(!found)throw new IllegalStateException("Group row missing: "+mc.gui.screen().children().stream().filter(c->c instanceof gg.monkeyclient.ui.MenuButton).map(c->((gg.monkeyclient.ui.MenuButton)c).getMessage().getString()).toList());}
+   if(monkeyqa$worldTicks==440){try{for(String fieldName:new String[]{"messages","members"}){var field=gg.monkeyclient.ui.FriendsScreen.class.getDeclaredField(fieldName);field.setAccessible(true);if(((com.google.gson.JsonArray)field.get(mc.gui.screen())).isEmpty()){if(monkeyqa$groupWait==0)monkeyqa$groupWait=System.nanoTime();if(System.nanoTime()-monkeyqa$groupWait<15_000_000_000L){monkeyqa$worldTicks--;return;}var status=gg.monkeyclient.ui.NativeScreen.class.getDeclaredField("status");status.setAccessible(true);throw new IllegalStateException("Native group "+fieldName+" missing: "+status.get(mc.gui.screen()));}}}catch(ReflectiveOperationException e){throw new IllegalStateException(e);}}
    if(monkeyqa$worldTicks==450){monkeyqa$loaded(mc);System.out.println("MONKEY_QA_NATIVE_FRIENDS");mc.setScreenAndShow(new gg.monkeyclient.ui.LauncherScreen(null,"screenshots"));}
    if(monkeyqa$worldTicks==500){monkeyqa$loaded(mc);for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().isEmpty()){b.onClick(null,false);break;}for(var child:mc.gui.screen().children())if(child instanceof gg.monkeyclient.ui.MenuButton b&&b.getMessage().getString().equals("Open")){b.onClick(null,false);break;}}
    if(monkeyqa$worldTicks==550){if(!(mc.gui.screen() instanceof gg.monkeyclient.ui.NativeImageScreen))throw new IllegalStateException("Native image viewer missing");try{var field=gg.monkeyclient.ui.NativeScreen.class.getDeclaredField("pictures");field.setAccessible(true);if(((java.util.Map<?,?>)field.get(mc.gui.screen())).isEmpty())throw new IllegalStateException("Image preview failed to decode");}catch(ReflectiveOperationException e){throw new IllegalStateException(e);}System.out.println("MONKEY_QA_NATIVE_GALLERY");mc.setScreenAndShow(new gg.monkeyclient.ui.LauncherScreen(null,"skins"));}
