@@ -65,13 +65,14 @@ for folder in ['source','compiled','resources','runtime']:
  if target.exists():shutil.rmtree(target)
 for kind in ['sources','resources']:run([sys.executable,repo/('tools/port-'+kind+'.py'),a.version,out/('source' if kind=='sources' else 'resources'),a.loader],out/(kind+'.log'))
 joined=';'.join(map(str,classpath));jtool('CompileDriver',[joined,out/'source',out/'compiled',21 if a.loader=='forge' else row['java']],out/'compile.log')
+jtool('GameplayAudit',[out/'compiled'],out/'gameplay-audit.log')
 jtool('MixinAudit',[out/'compiled',joined,out/'resources'],out/'audit.log');classes=out/'compiled'
 if a.loader=='fabric' and a.version.startswith('1.'):
  classes=out/'runtime';jtool('RemapDriver',[base/'mappings.tiny','named','intermediary',out/'compiled',classes,joined,'mixins'],out/'remap-client.log')
  jtool('MixinAudit',[classes,';'.join(map(str,[base/'intermediary',base/'api-intermediary',cp])),out/'resources'],out/'runtime-audit.log')
 if a.loader=='fabric':
  dest=out/'resources/META-INF/jars/sodium.jar';dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(base/'sodium.jar',dest)
-jar=out/('monkeyclient-0.9.0+'+a.version+'-'+a.loader+'.jar')
+jar=out/('monkeyclient-0.9.1+'+a.version+'-'+a.loader+'.jar')
 with zipfile.ZipFile(jar,'w',zipfile.ZIP_DEFLATED) as z:
  for folder in [classes,out/'resources']:
   for file in sorted(folder.rglob('*')):

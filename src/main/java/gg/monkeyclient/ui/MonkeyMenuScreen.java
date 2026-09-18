@@ -342,7 +342,6 @@ public class MonkeyMenuScreen extends Screen {
             case "fps" -> Items.CLOCK;
             case "cps" -> Items.DIAMOND_SWORD;
             case "keystrokes" -> Items.OAK_PRESSURE_PLATE;
-            case "sprint" -> Items.DIAMOND_BOOTS;
             case "guiscale" -> Items.ITEM_FRAME;
             case "fog" -> Items.GLASS;
             case "outlines" -> Items.GLOWSTONE_DUST;

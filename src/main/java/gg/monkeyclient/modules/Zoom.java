@@ -11,7 +11,6 @@ public class Zoom extends Module {
     public final KeySetting key = add(new KeySetting("key", "Zoom key", GLFW.GLFW_KEY_C));
     public final EnumSetting mode = add(new EnumSetting("mode", "Behaviour", "Hold", List.of("Hold", "Toggle")));
     public final NumberSetting smooth = add(new NumberSetting("smooth", "Transition time (seconds)", 0.15, 0, 0.6, 0.01));
-    public final BoolSetting cinematic = add(new BoolSetting("cinematic", "Reduce mouse sensitivity", true));
     public final BoolSetting scroll = add(new BoolSetting("scroll", "Scroll to adjust zoom", true));
     private boolean toggled, wasDown;
     private double factor = 1, scrollDivisor = 4, visualScale = 1, crosshairOpacity = 1;
@@ -47,7 +46,6 @@ public class Zoom extends Module {
     public float handFov(float original) {
         return (float)Math.toDegrees(2*Math.atan(Math.tan(Math.toRadians(original)*.5)/visualScale));
     }
-    public boolean reduceSensitivity() { return cinematic.get() && factor < .999; }
     public boolean scroll(double delta) {
         if (!active()) return false;
         if (scroll.get()) scrollDivisor = Math.max(1.5, Math.min(50, scrollDivisor * Math.pow(1.15, delta)));

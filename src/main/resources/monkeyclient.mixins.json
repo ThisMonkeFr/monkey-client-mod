@@ -21,7 +21,6 @@
     "NametagMixin",
     "PostChainAccessor",
     "PostPassAccessor",
-    "SprintMixin",
     "TabPingMixin",
     "WindowScaleMixin",
     "ClickMixin",

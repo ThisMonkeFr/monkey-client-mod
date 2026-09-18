@@ -28,12 +28,21 @@ public class WorldProbe {
     for(var module:gg.monkeyclient.MonkeyClient.modules().all()){module.enabled.set(true);module.onToggle(true);}
     System.out.println("MONKEY_QA_WORLD_JOINED");
    }
-   var flight=gg.monkeyclient.MonkeyClient.modules().get(gg.monkeyclient.modules.ToggleSprint.class);
-   if(monkeyqa$worldTicks==90){var server=mc.getSingleplayerServer();server.execute(()->server.getPlayerList().getPlayer(mc.player.getUUID()).setGameMode(net.minecraft.world.level.GameType.CREATIVE));flight.flight.set(10d);flight.flightMode.set("Automatic");}
-   if(monkeyqa$worldTicks==105){mc.player.getAbilities().flying=true;mc.options.keyUp.setDown(true);}
-   if(monkeyqa$worldTicks>110&&monkeyqa$worldTicks<165){if(Math.abs(mc.player.getAbilities().getFlyingSpeed()-.5f)>.0001)throw new IllegalStateException("Flight multiplier compounded");}
-   if(monkeyqa$worldTicks==170){mc.options.keyUp.setDown(false);flight.enabled.set(false);flight.onToggle(false);}
-   if(monkeyqa$worldTicks==190){if(Math.abs(mc.player.getAbilities().getFlyingSpeed()-.05f)>.0001)throw new IllegalStateException("Flight failed to restore");System.out.println("MONKEY_QA_FLIGHT_PASS");}
+   if(monkeyqa$worldTicks==90){
+    var old=com.google.gson.JsonParser.parseString("{\"modules\":{\"sprint\":{\"enabled\":true,\"mode\":\"Always\",\"flight\":100},\"zoom\":{\"cinematic\":true}}}").getAsJsonObject();
+    gg.monkeyclient.config.ConfigManager.apply(old);
+    if(gg.monkeyclient.MonkeyClient.modules().byId("sprint")!=null)throw new IllegalStateException("Removed sprint restored by old config");
+    if(gg.monkeyclient.config.ConfigManager.snapshot().getAsJsonObject("modules").has("sprint"))throw new IllegalStateException("Removed sprint exported");
+    var p=mc.player;boolean originalSprint=p.isSprinting();float originalFlight=p.getAbilities().getFlyingSpeed();
+    var originalMotion=p.getDeltaMovement();float yaw=p.getYRot(),pitch=p.getXRot();
+    for(boolean sprint:new boolean[]{false,true}){
+     p.setSprinting(sprint);p.getAbilities().setFlyingSpeed(.123f);
+     gg.monkeyclient.MonkeyClient.modules().tick();
+     if(p.isSprinting()!=sprint||p.getAbilities().getFlyingSpeed()!=.123f||!p.getDeltaMovement().equals(originalMotion)||p.getYRot()!=yaw||p.getXRot()!=pitch)throw new IllegalStateException("Modules changed vanilla movement state");
+    }
+    p.setSprinting(originalSprint);p.getAbilities().setFlyingSpeed(originalFlight);
+    System.out.println("MONKEY_QA_VANILLA_MOVEMENT_PASS");
+   }
    if(monkeyqa$worldTicks==240){mc.setScreenAndShow(new net.minecraft.client.gui.screens.PauseScreen(true));System.out.println("MONKEY_QA_PAUSE_MENU");}
    if(monkeyqa$worldTicks==280){
     boolean found=false;for(var child:mc.gui.screen().children())if(child instanceof net.minecraft.client.gui.components.Button button&&button.getMessage().getString().equals("Monkey Client")){button.onPress(null);found=true;break;}

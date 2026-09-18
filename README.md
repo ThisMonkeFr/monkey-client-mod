@@ -1,4 +1,4 @@
-# Monkey Client mod 0.9.0
+# Monkey Client mod 0.9.1
 
 Eight Minecraft versions: 26.3, 26.2, 26.1.2, 26.1.1, 26.1, 1.21.11, 1.21.10 and 1.21.9. Fabric builds use Loader 0.19.5+ and the matching Fabric API. Forge builds are provided for every listed version except 26.3, for which Forge has no official release. Java 25 is required for 26.x; Java 21 for 1.21.x.
 
@@ -16,7 +16,7 @@ Eight Minecraft versions: 26.3, 26.2, 26.1.2, 26.1.1, 26.1, 1.21.11, 1.21.10 and
 
 Settings persist in `config/monkeyclient.json`. Named module profiles persist in `config/monkeyclient/mod-profiles.json`. Custom item PNGs belong in `config/monkeyclient/textures/`.
 
-World Editor follows native video render-distance changes in both directions. Fabric includes Sodium and the terrain cache supports extended distances; Forge uses the native renderer's 32-chunk limit. Creative flight's speed slider reaches 100. Hold Left Alt to boost by default, rebind the key or choose Automatic in Toggle Sprint settings. Tier Display supports a selected MCPVP kit, the best MCPVP kit, and best gamemode across all three integrated tier providers.
+World Editor follows native video render-distance changes in both directions. Fabric includes Sodium and the terrain cache supports extended distances; Forge uses the native renderer's 32-chunk limit. Custom sprint and flight controls have been removed. Use Minecraft's own sprint toggle option; movement and mouse input remain vanilla. Tier Display supports a selected MCPVP kit, the best MCPVP kit, and best gamemode across all three integrated tier providers.
 
 ## Building the version-specific releases
 
@@ -33,6 +33,6 @@ Use your actual Java executable path. The tool downloads pinned SDK dependencies
 
 All 15 release combinations compile and pass their native mixin audits. The fresh-download source builder was also verified for 26.2 Fabric. Automated runtime checks boot the client on a Linux virtual display and verify the dimensions of a real F2 capture. See RELEASE-NOTES.md for the verification scope.
 
-The Monkey menu uses smaller module cards and adapts its height to the selected category. Custom cape colours use Minecraft's elytra transparency mask to preserve the normal wing silhouette. Creative flight synchronizes speed with the integrated server; remote servers retain control over permitted movement speeds.
+The Monkey menu uses smaller module cards and adapts its height to the selected category. Custom cape colours use Minecraft's elytra transparency mask to preserve the normal wing silhouette. Zoom changes only the rendered view and does not rewrite mouse deltas. Server permission must be checked separately; automated game checks are not anti-cheat certification.
 
 The pause menu also has a Monkey Client button. Launcher 0.9 copies saved module profiles and settings into newly created profiles. Forge resources declare the exact pack format for each game version; 26.3 uses RenderPearl-compatible post-processing shaders. Test-only world probes under `tools/qa` are never included in release JARs.

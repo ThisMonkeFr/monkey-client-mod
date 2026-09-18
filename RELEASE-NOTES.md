@@ -1,3 +1,12 @@
+# 0.9.1 - Remove custom movement and mouse-input overrides
+
+- Remove the custom Sprint module, its duplicate player-tick hook, and all creative-flight speed changes. Minecraft alone controls sprinting and flight. Use Minecraft's own sprint toggle option if wanted.
+- Remove zoom's raw mouse-delta scaling. Zoom still changes the field of view and fades the crosshair; mouse input remains vanilla.
+- Remove these settings from the PvP/Hoplite presets. Existing profiles cannot restore the removed module or input hook.
+- Add a compiled-code regression audit and runtime checks for unchanged movement state, including importing an old profile with sprint/flight enabled.
+
+This release removes confirmed non-vanilla behavior found after a reported MCPVP ban. The server's exact detection is unknown. These checks do not establish server approval or guarantee protection from bans. Third-party mods remain subject to each server's rules.
+
 # 0.9.0 - Native libraries and restored landing menu
 
 - Right Shift and the pause-menu shortcut open the Monkey landing menu again. The navigation bar has no Home tab button.

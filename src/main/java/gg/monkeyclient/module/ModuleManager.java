@@ -18,7 +18,6 @@ public class ModuleManager {
         register(new CoordsDisplay());
         register(new Brightness());
         register(new Zoom());
-        register(new ToggleSprint());
         register(new GuiScale());
         register(new BorderlessFullscreen());
         register(new FogEditor());

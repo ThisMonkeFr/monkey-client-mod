@@ -25,7 +25,7 @@ for name in ['monkeyclient.mixins.json','monkeycache.mixins.json']:
   if name=='monkeyclient.mixins.json':j['client']+=['ForgeTickMixin','ForgePayloadCodecMixin','ForgePayloadMixin']
  p.write_text(json.dumps(j,indent=2))
 if loader=='fabric':
- p=out/'fabric.mod.json';j=json.loads(p.read_text());j['version']='0.9.0';j['depends'].update(minecraft=v,java='>=21' if v.startswith('1.') else '>=25',fabricloader='>=0.19.5',sodium='*');j['jars']=[{'file':'META-INF/jars/sodium.jar'}]
+ p=out/'fabric.mod.json';j=json.loads(p.read_text());j['version']='0.9.1';j['depends'].update(minecraft=v,java='>=21' if v.startswith('1.') else '>=25',fabricloader='>=0.19.5',sodium='*');j['jars']=[{'file':'META-INF/jars/sodium.jar'}]
  if v in ['1.21.10','1.21.9']:j['entrypoints'].pop('sodium:config_api_user',None)
  p.write_text(json.dumps(j,indent=2))
 else:
@@ -38,7 +38,7 @@ loaderVersion="[1,)"
 license="MIT AND LGPL-3.0-or-later"
 [[mods]]
 modId="monkeyclient"
-version="0.9.0"
+version="0.9.1"
 displayName="Monkey Client"
 authors="ThisMonkeFr"
 displayTest="IGNORE_ALL_VERSION"

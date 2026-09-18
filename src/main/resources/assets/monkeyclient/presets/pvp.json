@@ -251,15 +251,7 @@
         "key": 67,
         "mode": "Hold",
         "smooth": 0.15,
-        "cinematic": true,
         "scroll": true
-      },
-      "sprint": {
-        "enabled": true,
-        "mode": "Toggle",
-        "onlyForward": true,
-        "keepInAir": true,
-        "flight": 10.0
       },
       "guiscale": {
         "enabled": true,
